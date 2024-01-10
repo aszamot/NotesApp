@@ -16,6 +16,10 @@ class LocalNotesDataSourceImpl(
         notesDao.addNote(note.toNoteEntity())
     }
 
+    override suspend fun updateNote(note: Note) {
+        notesDao.update(note.toNoteEntity())
+    }
+
     override suspend fun deleteNote(note: Note) {
         notesDao.delete(note.toNoteEntity())
     }

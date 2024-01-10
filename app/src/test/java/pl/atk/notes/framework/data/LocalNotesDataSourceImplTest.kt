@@ -44,6 +44,14 @@ class LocalNotesDataSourceImplTest {
     }
 
     @Test
+    fun updateNote_shouldCallDaoUpdate() = runTest {
+        val note = TestData.TEST_NOTE_1
+        dataSource.updateNote(note)
+
+        verify(notesDao).update(note.toNoteEntity())
+    }
+
+    @Test
     fun deleteNote_shouldCallDaoDeleteNote() = runTest {
         val note = TestData.TEST_NOTE_1
         dataSource.deleteNote(TestData.TEST_NOTE_1)
