@@ -5,14 +5,19 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import pl.atk.notes.TestData
+import pl.atk.notes.TestDispatcherRule
 import pl.atk.notes.data.local.LocalNotesDataSource
 
 class NotesRepositoryImplTest {
+
+    @get: Rule
+    val dispatcherRule = TestDispatcherRule()
 
     private lateinit var repository: NotesRepositoryImpl
     private lateinit var localNotesDataSource: LocalNotesDataSource
