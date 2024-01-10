@@ -17,7 +17,7 @@ class NotesRepositoryImpl(
         localNotesDataSource.deleteNote(note)
     }
 
-    override fun getNotes(): Flow<List<Note>> {
+    override fun getNotesFlow(): Flow<List<Note>> {
         return localNotesDataSource.getNotesFlow()
     }
 }

@@ -5,7 +5,8 @@ import kotlinx.coroutines.flow.map
 import pl.atk.notes.data.local.LocalNotesDataSource
 import pl.atk.notes.domain.models.Note
 import pl.atk.notes.framework.db.daos.NotesDao
-import pl.atk.notes.framework.db.models.NoteEntity
+import pl.atk.notes.utils.toNote
+import pl.atk.notes.utils.toNoteEntity
 
 class LocalNotesDataSourceImpl(
     private val notesDao: NotesDao
@@ -25,22 +26,4 @@ class LocalNotesDataSourceImpl(
                 notes.map { it.toNote() }
             }
     }
-
-    private fun Note.toNoteEntity() = NoteEntity(
-        id = this.id,
-        title = this.title,
-        content = this.content,
-        timestamp = this.timestamp,
-        isInTrash = this.isInTrash,
-        isArchived = this.isArchived
-    )
-
-    private fun NoteEntity.toNote() = Note(
-        id = this.id,
-        title = this.title,
-        content = this.content,
-        timestamp = this.timestamp,
-        isInTrash = this.isInTrash,
-        isArchived = this.isArchived
-    )
 }
