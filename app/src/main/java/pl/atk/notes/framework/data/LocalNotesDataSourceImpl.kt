@@ -12,7 +12,7 @@ class LocalNotesDataSourceImpl(
 ) : LocalNotesDataSource {
 
     override suspend fun addNote(note: Note) {
-        notesDao.insert(note.toNoteEntity())
+        notesDao.addNote(note.toNoteEntity())
     }
 
     override suspend fun deleteNote(note: Note) {

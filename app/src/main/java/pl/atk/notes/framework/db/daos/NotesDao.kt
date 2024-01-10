@@ -12,7 +12,7 @@ import pl.atk.notes.framework.db.models.NoteEntity
 interface NotesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(noteEntity: NoteEntity)
+    suspend fun addNote(noteEntity: NoteEntity)
 
     @Delete
     suspend fun delete(noteEntity: NoteEntity)
