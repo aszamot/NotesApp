@@ -7,6 +7,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.kotlin.argThat
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
@@ -38,39 +39,39 @@ class NotesRepositoryImplTest {
     }
 
     @Test
-    fun archiveNote_shouldCallLocalDataSourceUpdateWithIsArchivedSetToTrue() = runTest  {
+    fun archiveNote_shouldCallLocalDataSourceUpdateWithIsArchivedSetToTrue() = runTest {
         val note = TestData.TEST_NOTE_1
 
         repository.archiveNote(note)
 
-        verify(localNotesDataSource).updateNote(note.copy(isArchived = true))
+        verify(localNotesDataSource).updateNote(argThat { isArchived == true && timestamp > note.timestamp })
     }
 
     @Test
-    fun unArchiveNote_shouldCallLocalDataSourceUpdateWithIsArchivedSetToFalse() = runTest  {
+    fun unArchiveNote_shouldCallLocalDataSourceUpdateWithIsArchivedSetToFalse() = runTest {
         val note = TestData.TEST_NOTE_1
 
         repository.unArchiveNote(note)
 
-        verify(localNotesDataSource).updateNote(note.copy(isArchived = false))
+        verify(localNotesDataSource).updateNote(argThat { isArchived == false && timestamp > note.timestamp })
     }
 
     @Test
-    fun trashNote_shouldCallLocalDataSourceUpdateWithIsInTrashSetToTrue() = runTest  {
+    fun trashNote_shouldCallLocalDataSourceUpdateWithIsInTrashSetToTrue() = runTest {
         val note = TestData.TEST_NOTE_1
 
         repository.trashNote(note)
 
-        verify(localNotesDataSource).updateNote(note.copy(isInTrash = true))
+        verify(localNotesDataSource).updateNote(argThat { isInTrash == true && timestamp > note.timestamp })
     }
 
     @Test
-    fun unTrashNote_shouldCallLocalDataSourceUpdateWithIsInTrashSetToFalse() = runTest  {
+    fun unTrashNote_shouldCallLocalDataSourceUpdateWithIsInTrashSetToFalse() = runTest {
         val note = TestData.TEST_NOTE_1
 
         repository.unTrashNote(note)
 
-        verify(localNotesDataSource).updateNote(note.copy(isInTrash = false))
+        verify(localNotesDataSource).updateNote(argThat { isInTrash == false && timestamp > note.timestamp })
     }
 
     @Test

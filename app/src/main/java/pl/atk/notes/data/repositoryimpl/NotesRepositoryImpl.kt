@@ -14,19 +14,39 @@ class NotesRepositoryImpl(
     }
 
     override suspend fun archiveNote(note: Note) {
-        localNotesDataSource.updateNote(note.copy(isArchived = true))
+        localNotesDataSource.updateNote(
+            note.copy(
+                isArchived = true,
+                timestamp = System.currentTimeMillis()
+            )
+        )
     }
 
     override suspend fun unArchiveNote(note: Note) {
-        localNotesDataSource.updateNote(note.copy(isArchived = false))
+        localNotesDataSource.updateNote(
+            note.copy(
+                isArchived = false,
+                timestamp = System.currentTimeMillis()
+            )
+        )
     }
 
     override suspend fun trashNote(note: Note) {
-        localNotesDataSource.updateNote(note.copy(isInTrash = true))
+        localNotesDataSource.updateNote(
+            note.copy(
+                isInTrash = true,
+                timestamp = System.currentTimeMillis()
+            )
+        )
     }
 
     override suspend fun unTrashNote(note: Note) {
-        localNotesDataSource.updateNote(note.copy(isInTrash = false))
+        localNotesDataSource.updateNote(
+            note.copy(
+                isInTrash = false,
+                timestamp = System.currentTimeMillis()
+            )
+        )
     }
 
     override suspend fun deleteNote(note: Note) {
