@@ -49,6 +49,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.core.testing)
 
     implementation(libs.androidx.fragment.ktx)
 
@@ -59,6 +60,7 @@ dependencies {
     testImplementation(libs.androidx.lifecycle.runtime.testing)
 
     implementation(libs.kotlinx.coroutines.android)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.kotlinx.coroutines.test)
 
     implementation(libs.hilt.android)
@@ -70,6 +72,9 @@ dependencies {
     testImplementation(libs.room.testing)
 
     implementation(libs.timber)
+
+    testImplementation(libs.app.turbine)
+    androidTestImplementation(libs.app.turbine)
 }
 
 kapt {
