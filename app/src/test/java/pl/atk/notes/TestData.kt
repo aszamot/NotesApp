@@ -39,6 +39,14 @@ class TestData {
             isInTrash = false,
             isArchived = false
         )
+        val TEST_NOTE_1_DELETED = Note(
+            id = UUID.fromString("a749d804-59a6-49b5-93d2-36429b45ec5b"),
+            title = "Title1",
+            content = "Content1",
+            timestamp = 12345L,
+            isInTrash = true,
+            isArchived = false
+        )
     }
 
 }
