@@ -13,6 +13,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import pl.atk.notes.TestData.Companion.TEST_NOTE_1
+import pl.atk.notes.TestData.Companion.TEST_NOTE_1_UPDATED
 import pl.atk.notes.TestData.Companion.TEST_NOTE_2
 import pl.atk.notes.TestDispatcherRule
 import pl.atk.notes.framework.db.NotesDatabase
@@ -81,6 +82,35 @@ class NotesDaoTest {
     fun add_addNoteOnConflict_databaseListSizeCorrect() = runTest {
         notesDao.addNote(TEST_NOTE_1)
         notesDao.addNote(TEST_NOTE_1)
+
+        notesDao.getNotesFlow().test {
+            val list = awaitItem()
+            Assert.assertEquals(1, list.size)
+            cancel()
+        }
+    }
+
+    @Test
+    fun update_updateNote_success() = runTest {
+        val note = TEST_NOTE_1
+        notesDao.addNote(note)
+
+        notesDao.update(note.copy(title = "Title1 - updated", content = "Content1 - updated"))
+
+        notesDao.getNotesFlow().test {
+            val list = awaitItem()
+            Assert.assertEquals(TEST_NOTE_1_UPDATED, list[0])
+            cancel()
+        }
+    }
+
+    @Test
+    fun update_updateNoteThatIsNotInDatabase_notExistingNoteNotInserted() = runTest {
+        val note = TEST_NOTE_1
+        val note2 = TEST_NOTE_2
+        notesDao.addNote(note2)
+
+        notesDao.update(note.copy(title = "Title1 - updated", content = "Content1 - updated"))
 
         notesDao.getNotesFlow().test {
             val list = awaitItem()

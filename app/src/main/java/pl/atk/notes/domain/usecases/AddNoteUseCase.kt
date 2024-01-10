@@ -6,6 +6,5 @@ import pl.atk.notes.domain.repository.NotesRepository
 class AddNoteUseCase(
     private val notesRepository: NotesRepository
 ) {
-
     suspend fun invoke(note: Note) = notesRepository.addNote(note)
 }

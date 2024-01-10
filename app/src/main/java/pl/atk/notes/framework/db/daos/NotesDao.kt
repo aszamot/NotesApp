@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import pl.atk.notes.framework.db.models.NoteEntity
 
@@ -13,6 +14,9 @@ interface NotesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addNote(noteEntity: NoteEntity)
+
+    @Update
+    suspend fun update(noteEntity: NoteEntity)
 
     @Delete
     suspend fun delete(noteEntity: NoteEntity)

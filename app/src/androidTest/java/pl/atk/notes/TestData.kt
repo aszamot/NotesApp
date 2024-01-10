@@ -14,6 +14,14 @@ class TestData {
             isInTrash = false,
             isArchived = false
         )
+        val TEST_NOTE_1_UPDATED = NoteEntity(
+            id = UUID.fromString("a749d804-59a6-49b5-93d2-36429b45ec5b"),
+            title = "Title1 - updated",
+            content = "Content1 - updated",
+            timestamp = 12345L,
+            isInTrash = false,
+            isArchived = false
+        )
         val TEST_NOTE_2 = NoteEntity(
             id = UUID.fromString("5cbb8277-e58d-4585-8b27-19725e358cf8"),
             title = "Title2",
