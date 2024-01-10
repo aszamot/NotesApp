@@ -24,7 +24,7 @@ class NotesRepositoryImplTest {
     }
 
     @Test
-    fun addNote_shouldCallLocalDataStoreAddNote() = runTest {
+    fun addNote_shouldCallLocalDataSourceAddNote() = runTest {
         val note = TestData.TEST_NOTE_1
 
         repository.addNote(note)
@@ -33,7 +33,43 @@ class NotesRepositoryImplTest {
     }
 
     @Test
-    fun deleteNote_shouldCallLocalDataStoreDeleteNote() = runTest {
+    fun archiveNote_shouldCallLocalDataSourceUpdateWithIsArchivedSetToTrue() = runTest  {
+        val note = TestData.TEST_NOTE_1
+
+        repository.archiveNote(note)
+
+        verify(localNotesDataSource).updateNote(note.copy(isArchived = true))
+    }
+
+    @Test
+    fun unArchiveNote_shouldCallLocalDataSourceUpdateWithIsArchivedSetToFalse() = runTest  {
+        val note = TestData.TEST_NOTE_1
+
+        repository.unArchiveNote(note)
+
+        verify(localNotesDataSource).updateNote(note.copy(isArchived = false))
+    }
+
+    @Test
+    fun trashNote_shouldCallLocalDataSourceUpdateWithIsInTrashSetToTrue() = runTest  {
+        val note = TestData.TEST_NOTE_1
+
+        repository.trashNote(note)
+
+        verify(localNotesDataSource).updateNote(note.copy(isInTrash = true))
+    }
+
+    @Test
+    fun unTrashNote_shouldCallLocalDataSourceUpdateWithIsInTrashSetToFalse() = runTest  {
+        val note = TestData.TEST_NOTE_1
+
+        repository.unTrashNote(note)
+
+        verify(localNotesDataSource).updateNote(note.copy(isInTrash = false))
+    }
+
+    @Test
+    fun deleteNote_shouldCallLocalDataSourceDeleteNote() = runTest {
         val note = TestData.TEST_NOTE_1
 
         repository.deleteNote(note)
@@ -42,7 +78,7 @@ class NotesRepositoryImplTest {
     }
 
     @Test
-    fun getNotes_shouldCallLocalDataStoreDeleteNote() = runTest {
+    fun getNotes_shouldCallLocalDataSourceDeleteNote() = runTest {
         val notes = listOf(TestData.TEST_NOTE_1, TestData.TEST_NOTE_2)
         whenever(localNotesDataSource.getNotesFlow()).thenReturn(flowOf(notes))
 

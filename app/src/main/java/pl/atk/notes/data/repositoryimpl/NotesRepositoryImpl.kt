@@ -13,6 +13,22 @@ class NotesRepositoryImpl(
         localNotesDataSource.addNote(note)
     }
 
+    override suspend fun archiveNote(note: Note) {
+        localNotesDataSource.updateNote(note.copy(isArchived = true))
+    }
+
+    override suspend fun unArchiveNote(note: Note) {
+        localNotesDataSource.updateNote(note.copy(isArchived = false))
+    }
+
+    override suspend fun trashNote(note: Note) {
+        localNotesDataSource.updateNote(note.copy(isInTrash = true))
+    }
+
+    override suspend fun unTrashNote(note: Note) {
+        localNotesDataSource.updateNote(note.copy(isInTrash = false))
+    }
+
     override suspend fun deleteNote(note: Note) {
         localNotesDataSource.deleteNote(note)
     }
