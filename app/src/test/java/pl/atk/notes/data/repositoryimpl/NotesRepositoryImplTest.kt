@@ -84,7 +84,7 @@ class NotesRepositoryImplTest {
     }
 
     @Test
-    fun getNotes_shouldCallLocalDataSourceDeleteNote() = runTest {
+    fun getNotes_shouldReturnNotes() = runTest {
         val notes = listOf(TestData.TEST_NOTE_1, TestData.TEST_NOTE_2)
         whenever(localNotesDataSource.getNotesFlow()).thenReturn(flowOf(notes))
 
@@ -93,5 +93,14 @@ class NotesRepositoryImplTest {
             assertEquals(notes, list)
             awaitComplete()
         }
+    }
+
+    @Test
+    fun getNotes_shouldCallLocalNotesDataSourceWithRightQuery() = runTest {
+        val query = "Test"
+
+        repository.getNotesFlow(query)
+
+        verify(localNotesDataSource).getNotesFlow(query)
     }
 }

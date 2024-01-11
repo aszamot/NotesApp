@@ -1,4 +1,4 @@
-package pl.atk.notes.utils
+package pl.atk.notes.utils.extensions
 
 import pl.atk.notes.domain.models.Note
 import pl.atk.notes.framework.db.models.NoteEntity

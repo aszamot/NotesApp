@@ -15,8 +15,11 @@ import org.junit.runner.RunWith
 import pl.atk.notes.TestData.Companion.TEST_NOTE_1
 import pl.atk.notes.TestData.Companion.TEST_NOTE_1_UPDATED
 import pl.atk.notes.TestData.Companion.TEST_NOTE_2
+import pl.atk.notes.TestData.Companion.TEST_NOTE_3
+import pl.atk.notes.TestData.Companion.TEST_NOTE_4
 import pl.atk.notes.TestDispatcherRule
 import pl.atk.notes.framework.db.NotesDatabase
+import pl.atk.notes.utils.extensions.empty
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -132,6 +135,7 @@ class NotesDaoTest {
             cancel()
         }
     }
+
     @Test
     fun delete_deletesNote_success() = runTest {
         notesDao.addNote(TEST_NOTE_1)
@@ -159,4 +163,130 @@ class NotesDaoTest {
         }
     }
 
+    @Test
+    fun getNotesFlow_nullQuery_returnsWholeList() = runTest {
+        val expectedList = listOf(TEST_NOTE_1, TEST_NOTE_2, TEST_NOTE_3)
+        notesDao.addNote(TEST_NOTE_1)
+        notesDao.addNote(TEST_NOTE_2)
+        notesDao.addNote(TEST_NOTE_3)
+
+        notesDao.getNotesFlow().test {
+            val list = awaitItem()
+            Assert.assertEquals(expectedList, list)
+            cancel()
+        }
+    }
+
+    @Test
+    fun getNotesFlow_emptyQuery_returnsWholeList() = runTest {
+        val expectedList = listOf(TEST_NOTE_1, TEST_NOTE_2, TEST_NOTE_3)
+        notesDao.addNote(TEST_NOTE_1)
+        notesDao.addNote(TEST_NOTE_2)
+        notesDao.addNote(TEST_NOTE_3)
+
+        notesDao.getNotesFlow(String.empty).test {
+            val list = awaitItem()
+            Assert.assertEquals(expectedList, list)
+            cancel()
+        }
+    }
+
+    @Test
+    fun getNotesFlow_normalQueryByTitle_returnsGoodList() = runTest {
+        val expectedList = listOf(TEST_NOTE_2, TEST_NOTE_3)
+        notesDao.addNote(TEST_NOTE_1)
+        notesDao.addNote(TEST_NOTE_2)
+        notesDao.addNote(TEST_NOTE_3)
+
+        notesDao.getNotesFlow("Title2").test {
+            val list = awaitItem()
+            Assert.assertEquals(expectedList, list)
+            cancel()
+        }
+    }
+
+    @Test
+    fun getNotesFlow_lowercaseQueryByTitle_returnsGoodList() = runTest {
+        val expectedList = listOf(TEST_NOTE_2, TEST_NOTE_3)
+        notesDao.addNote(TEST_NOTE_1)
+        notesDao.addNote(TEST_NOTE_2)
+        notesDao.addNote(TEST_NOTE_3)
+
+        notesDao.getNotesFlow("title2").test {
+            val list = awaitItem()
+            Assert.assertEquals(expectedList, list)
+            cancel()
+        }
+    }
+
+    @Test
+    fun getNotesFlow_normalQueryByContent_returnsGoodList() = runTest {
+        val expectedList = listOf(TEST_NOTE_2, TEST_NOTE_3)
+        notesDao.addNote(TEST_NOTE_1)
+        notesDao.addNote(TEST_NOTE_2)
+        notesDao.addNote(TEST_NOTE_3)
+
+        notesDao.getNotesFlow("Content2").test {
+            val list = awaitItem()
+            Assert.assertEquals(expectedList, list)
+            cancel()
+        }
+    }
+
+    @Test
+    fun getNotesFlow_lowercaseQueryByContent_returnsGoodList() = runTest {
+        val expectedList = listOf(TEST_NOTE_2, TEST_NOTE_3)
+        notesDao.addNote(TEST_NOTE_1)
+        notesDao.addNote(TEST_NOTE_2)
+        notesDao.addNote(TEST_NOTE_3)
+
+        notesDao.getNotesFlow("content2").test {
+            val list = awaitItem()
+            Assert.assertEquals(expectedList, list)
+            cancel()
+        }
+    }
+
+    @Test
+    fun getNotesFlow_normalQueryByTitleAndContent_returnsGoodList() = runTest {
+        val expectedList = listOf(TEST_NOTE_1, TEST_NOTE_4)
+        notesDao.addNote(TEST_NOTE_1)
+        notesDao.addNote(TEST_NOTE_2)
+        notesDao.addNote(TEST_NOTE_3)
+        notesDao.addNote(TEST_NOTE_4)
+
+        notesDao.getNotesFlow("Title1").test {
+            val list = awaitItem()
+            Assert.assertEquals(expectedList, list)
+            cancel()
+        }
+    }
+
+    @Test
+    fun getNotesFlow_lowercaseQueryByTitleAndContent_returnsGoodList() = runTest {
+        val expectedList = listOf(TEST_NOTE_1, TEST_NOTE_4)
+        notesDao.addNote(TEST_NOTE_1)
+        notesDao.addNote(TEST_NOTE_2)
+        notesDao.addNote(TEST_NOTE_3)
+        notesDao.addNote(TEST_NOTE_4)
+
+        notesDao.getNotesFlow("title1").test {
+            val list = awaitItem()
+            Assert.assertEquals(expectedList, list)
+            cancel()
+        }
+    }
+
+    @Test
+    fun getNotesFlow_wrongQuery_returnsEmptyList() = runTest {
+        notesDao.addNote(TEST_NOTE_1)
+        notesDao.addNote(TEST_NOTE_2)
+        notesDao.addNote(TEST_NOTE_3)
+
+        notesDao.getNotesFlow("xyz").test {
+            val list = awaitItem()
+            Assert.assertEquals(0, list.size)
+            cancel()
+        }
+    }
 }

@@ -53,7 +53,7 @@ class NotesRepositoryImpl(
         localNotesDataSource.deleteNote(note)
     }
 
-    override fun getNotesFlow(): Flow<List<Note>> {
-        return localNotesDataSource.getNotesFlow()
+    override fun getNotesFlow(query: String?): Flow<List<Note>> {
+        return localNotesDataSource.getNotesFlow(query)
     }
 }

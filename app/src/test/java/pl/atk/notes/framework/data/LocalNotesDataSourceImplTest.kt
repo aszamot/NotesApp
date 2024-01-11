@@ -8,14 +8,16 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.kotlin.argThat
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import pl.atk.notes.TestData
 import pl.atk.notes.TestDispatcherRule
 import pl.atk.notes.framework.db.daos.NotesDao
-import pl.atk.notes.utils.toNote
-import pl.atk.notes.utils.toNoteEntity
+import pl.atk.notes.utils.extensions.empty
+import pl.atk.notes.utils.extensions.toNote
+import pl.atk.notes.utils.extensions.toNoteEntity
 
 class LocalNotesDataSourceImplTest {
 
@@ -60,7 +62,16 @@ class LocalNotesDataSourceImplTest {
     }
 
     @Test
-    fun getNotesFlow_shouldReturnMappedNotes() = runTest {
+    fun getNotesFlow_shouldCallDaoGetNotesFlowWithQuery() = runTest {
+        val query = "Test"
+
+        dataSource.getNotesFlow(query)
+
+        verify(notesDao).getNotesFlow(query)
+    }
+
+    @Test
+    fun getNotesFlow_shouldReturnAllMappedNotes() = runTest {
         val notesEntities = listOf(TestData.TEST_NOTE_ENTITY_1, TestData.TEST_NOTE_ENTITY_2)
         val expectedNotes = notesEntities.map { it.toNote() }
         whenever(notesDao.getNotesFlow()).thenReturn(flowOf(notesEntities))

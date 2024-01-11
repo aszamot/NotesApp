@@ -8,5 +8,5 @@ interface LocalNotesDataSource {
     suspend fun addNote(note: Note)
     suspend fun updateNote(note: Note)
     suspend fun deleteNote(note: Note)
-    fun getNotesFlow(): Flow<List<Note>>
+    fun getNotesFlow(query: String? = null): Flow<List<Note>>
 }

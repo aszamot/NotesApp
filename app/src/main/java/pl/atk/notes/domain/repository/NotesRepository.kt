@@ -11,5 +11,5 @@ interface NotesRepository {
     suspend fun trashNote(note: Note)
     suspend fun unTrashNote(note: Note)
     suspend fun deleteNote(note: Note)
-    fun getNotesFlow(): Flow<List<Note>>
+    fun getNotesFlow(query: String? = null): Flow<List<Note>>
 }

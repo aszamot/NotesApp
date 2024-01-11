@@ -21,6 +21,6 @@ interface NotesDao {
     @Delete
     suspend fun delete(noteEntity: NoteEntity)
 
-    @Query("SELECT * FROM notes")
-    fun getNotesFlow(): Flow<List<NoteEntity>>
+    @Query("SELECT * FROM notes WHERE (:query IS NULL OR :query = '' OR LOWER(title) LIKE '%' || LOWER(:query) || '%' OR LOWER(content) LIKE '%' || LOWER(:query) || '%')")
+    fun getNotesFlow(query: String? = null): Flow<List<NoteEntity>>
 }

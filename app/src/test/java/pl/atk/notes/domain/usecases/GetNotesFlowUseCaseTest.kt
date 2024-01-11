@@ -8,6 +8,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import pl.atk.notes.TestData
 import pl.atk.notes.TestDispatcherRule
@@ -37,5 +38,14 @@ class GetNotesFlowUseCaseTest {
             Assert.assertEquals(notes, list)
             awaitComplete()
         }
+    }
+
+    @Test
+    fun invoke_shouldCallNotesRepositoryWithRightQuery() = runTest {
+        val query = "Test"
+
+        useCase.invoke(query)
+
+        verify(notesRepository).getNotesFlow(query)
     }
 }
