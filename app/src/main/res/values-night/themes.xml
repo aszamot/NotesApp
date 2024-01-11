@@ -1,16 +1,24 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="Theme.Notes" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.Notes" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimary">@color/blue_gray900</item>
+        <item name="colorPrimaryVariant">@color/blue_gray900</item>
+        <item name="colorOnPrimary">@color/gray50</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondary">@color/deep_purple_a_700</item>
+        <item name="colorSecondaryVariant">@color/deep_purple_a_700</item>
+        <item name="colorOnSecondary">@color/gray50</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
         <!-- Customize your theme here. -->
+        <item name="android:colorBackground">@color/gray900</item>
+        <item name="colorOnBackground">@color/gray50</item>
+
+        <item name="colorSurface">?android:colorBackground</item>
+        <item name="colorOnSurface">?attr/colorOnBackground</item>
+
+        <item name="colorError">@color/red500</item>
+        <item name="colorOnError">@color/gray100</item>
     </style>
 </resources>
