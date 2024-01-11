@@ -1,5 +1,6 @@
 [versions]
 agp = "8.3.0-alpha16"
+coreKtxVersion = "1.5.0"
 coreTesting = "2.2.0"
 fragmentKtx = "1.6.2"
 kotlin = "1.9.0"
@@ -13,6 +14,7 @@ lifecycleKtx = "2.6.2"
 material = "1.11.0"
 hilt = "2.48"
 mockitoKotlin = "4.1.0"
+navigationFragmentKtx = "2.7.6"
 room = "2.6.1"
 timber = "5.0.1"
 turbineVersion = "1.0.0"
@@ -26,7 +28,11 @@ androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecyc
 androidx-lifecycle-viewmodel-savedstate = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-savedstate", version.ref = "lifecycleKtx" }
 androidx-lifecycle-compiler = { group = "androidx.lifecycle", name = "lifecycle-compiler", version.ref = "lifecycleKtx" }
 androidx-lifecycle-runtime-testing = { group = "androidx.lifecycle", name = "lifecycle-runtime-testing", version.ref = "lifecycleKtx" }
+androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
+androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationFragmentKtx" }
+androidx-navigation-navigation-testing = { group = "androidx.navigation", name = "navigation-testing", version.ref = "navigationFragmentKtx" }
 app-turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbineVersion" }
+core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtxVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

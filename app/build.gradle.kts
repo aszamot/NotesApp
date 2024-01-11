@@ -50,6 +50,7 @@ dependencies {
     testImplementation(libs.mockito.kotlin)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.core.ktx)
     androidTestImplementation(libs.androidx.core.testing)
     androidTestImplementation(libs.mockito.kotlin)
 
@@ -67,6 +68,10 @@ dependencies {
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
+
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+    androidTestImplementation(libs.androidx.navigation.navigation.testing)
 
     implementation(libs.room.runtime)
     kapt(libs.room.compiler)
