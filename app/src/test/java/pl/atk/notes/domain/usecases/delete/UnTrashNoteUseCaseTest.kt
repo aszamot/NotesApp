@@ -4,11 +4,16 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.Mock
+import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 import pl.atk.notes.TestData
 import pl.atk.notes.TestDispatcherRule
+import pl.atk.notes.domain.exceptions.NoteNotFoundException
 import pl.atk.notes.domain.repository.NotesRepository
+import java.util.UUID
 
 class UnTrashNoteUseCaseTest {
 
@@ -21,16 +26,23 @@ class UnTrashNoteUseCaseTest {
     @Before
     fun setUp() {
         notesRepository = mock()
-        useCase = UnTrashNoteUseCase(notesRepository)
+        useCase = UnTrashNoteUseCase(notesRepository, dispatcherRule.testDispatcher)
     }
 
     @Test
     fun invoke_shouldCallNotesRepositoryUnTrashNote() = runTest {
-        val note = TestData.TEST_NOTE_1
+        val noteId = UUID.randomUUID()
 
-        useCase.invoke(note)
+        useCase.invoke(noteId)
 
-        verify(notesRepository).unTrashNote(note)
+        verify(notesRepository).unTrashNote(noteId)
     }
 
+    @Test(expected = NoteNotFoundException::class)
+    fun invoke_noteNotExisting_shouldThrowNoteNotFoundException() = runTest {
+        val noteId = UUID.randomUUID()
+        doAnswer { throw NoteNotFoundException() }.whenever(notesRepository).unTrashNote(noteId)
+
+        useCase.invoke(noteId)
+    }
 }

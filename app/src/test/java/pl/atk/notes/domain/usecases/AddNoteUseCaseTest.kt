@@ -21,7 +21,7 @@ class AddNoteUseCaseTest {
     @Before
     fun setUp() {
         notesRepository = mock()
-        useCase = AddNoteUseCase(notesRepository)
+        useCase = AddNoteUseCase(notesRepository, dispatcherRule.testDispatcher)
     }
 
     @Test

@@ -1,12 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_to_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="NOTES LIST FRAGMENT" />
+        app:layout_behavior="com.google.android.material.search.SearchBar$ScrollingViewBehavior">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <pl.atk.notes.presentation.utils.views.EmptyView
+                android:id="@+id/empty_view_notes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                app:icon="@drawable/ic_add"
+                app:text="@string/empty_notes_description" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_notes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingTop="88dp"
+                tools:itemCount="10"
+                tools:listitem="@layout/item_note" />
+
+        </FrameLayout>
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/choose_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:navigationIcon="@drawable/ic_close" />
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.search.SearchBar
+            android:id="@+id/search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/search_notes"
+            app:navigationIcon="@drawable/ic_menu"
+            app:tintNavigationIcon="?colorOnSurface" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.search.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:hint="@string/search_notes"
+        app:backgroundTint="?android:colorBackground"
+        app:layout_anchor="@id/search_bar">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <pl.atk.notes.presentation.utils.views.EmptyView
+                android:id="@+id/empty_view_search_notes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                app:icon="@drawable/ic_search"
+                app:text="@string/notes_empty_search_description" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_search_notes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:itemCount="10"
+                tools:listitem="@layout/item_note" />
+
+        </FrameLayout>
+
+    </com.google.android.material.search.SearchView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add_note"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/content_description_add_note_fab"
+        android:src="@drawable/ic_add"
+        android:tint="?attr/colorOnSecondary"
+        app:backgroundTint="?attr/colorSecondary" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

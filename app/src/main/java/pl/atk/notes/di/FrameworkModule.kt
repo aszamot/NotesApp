@@ -10,11 +10,13 @@ import dagger.hilt.components.SingletonComponent
 import pl.atk.notes.Globals
 import pl.atk.notes.framework.db.NotesDatabase
 import pl.atk.notes.framework.db.daos.NotesDao
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object FrameworkModule {
 
+    @Singleton
     @Provides
     fun provideNotesDatabase(@ApplicationContext appContext: Context) =
         Room.databaseBuilder(

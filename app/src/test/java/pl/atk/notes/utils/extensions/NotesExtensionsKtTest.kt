@@ -19,4 +19,11 @@ class NotesExtensionsKtTest {
 
         assertEquals(TestData.TEST_NOTE_1, note)
     }
+
+    @Test
+    fun note_toNoteItemUi_success() {
+        val note = TestData.TEST_NOTE_1.toNoteItemUi()
+
+        assertEquals(TestData.TEST_NOTE_ITEM_UI_1, note)
+    }
 }

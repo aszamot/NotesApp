@@ -8,9 +8,13 @@ import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import pl.atk.notes.framework.db.models.NoteEntity
+import java.util.UUID
 
 @Dao
 interface NotesDao {
+
+    @Query("SELECT * FROM notes WHERE id = :noteId")
+    suspend fun getNote(noteId: UUID): NoteEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addNote(noteEntity: NoteEntity)
@@ -18,9 +22,18 @@ interface NotesDao {
     @Update
     suspend fun update(noteEntity: NoteEntity)
 
-    @Delete
-    suspend fun delete(noteEntity: NoteEntity)
+    @Query("DELETE FROM notes WHERE id = :noteId")
+    suspend fun delete(noteId: UUID)
 
-    @Query("SELECT * FROM notes WHERE (:query IS NULL OR :query = '' OR LOWER(title) LIKE '%' || LOWER(:query) || '%' OR LOWER(content) LIKE '%' || LOWER(:query) || '%')")
-    fun getNotesFlow(query: String? = null): Flow<List<NoteEntity>>
+    @Query("SELECT * FROM notes WHERE is_archived = 0 AND is_in_trash = 0")
+    fun getAllNotesFlow(): Flow<List<NoteEntity>>
+
+    @Query("SELECT * FROM notes WHERE is_archived = 0 AND is_in_trash = 0 AND CASE WHEN :query != '' THEN LOWER(title) LIKE '%' || LOWER(:query) || '%' OR LOWER(content) LIKE '%' || LOWER(:query) || '%' ELSE 0 END ")
+    fun searchNotesFlow(query: String): Flow<List<NoteEntity>>
+
+    @Query("SELECT * FROM notes WHERE (:query = '' OR LOWER(title) LIKE '%' || LOWER(:query) || '%' OR LOWER(content) LIKE '%' || LOWER(:query) || '%') AND is_archived = 1")
+    fun getArchivedNotesFlow(query: String): Flow<List<NoteEntity>>
+
+    @Query("SELECT * FROM notes WHERE (:query = '' OR LOWER(title) LIKE '%' || LOWER(:query) || '%' OR LOWER(content) LIKE '%' || LOWER(:query) || '%') AND is_in_trash = 1")
+    fun getInTrashNotesFlow(query: String): Flow<List<NoteEntity>>
 }

@@ -16,6 +16,7 @@ hilt = "2.48"
 mockitoKotlin = "4.1.0"
 navigationFragmentKtx = "2.7.6"
 room = "2.6.1"
+swiperefreshlayout = "1.1.0"
 timber = "5.0.1"
 turbineVersion = "1.0.0"
 
@@ -31,6 +32,7 @@ androidx-lifecycle-runtime-testing = { group = "androidx.lifecycle", name = "lif
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationFragmentKtx" }
 androidx-navigation-navigation-testing = { group = "androidx.navigation", name = "navigation-testing", version.ref = "navigationFragmentKtx" }
+androidx-swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
 app-turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbineVersion" }
 core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtxVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

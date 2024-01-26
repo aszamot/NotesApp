@@ -73,6 +73,8 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     androidTestImplementation(libs.androidx.navigation.navigation.testing)
 
+    implementation(libs.androidx.swiperefreshlayout)
+
     implementation(libs.room.runtime)
     kapt(libs.room.compiler)
     implementation(libs.room.ktx)
