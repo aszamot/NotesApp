@@ -14,8 +14,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import pl.atk.notes.R
-import pl.atk.notes.domain.models.Note
-import pl.atk.notes.domain.usecases.AddNoteUseCase
 import pl.atk.notes.domain.usecases.archive.ArchiveNoteUseCase
 import pl.atk.notes.domain.usecases.getnotes.GetAllNotesUseCase
 import pl.atk.notes.domain.usecases.delete.TrashNoteUseCase
@@ -23,11 +21,7 @@ import pl.atk.notes.domain.usecases.getnotes.SearchNotesUseCase
 import pl.atk.notes.presentation.model.NoteItemUi
 import pl.atk.notes.utils.extensions.empty
 import pl.atk.notes.utils.extensions.toNoteItemUi
-import timber.log.Timber
-import java.util.UUID
 import javax.inject.Inject
-import kotlin.random.Random
-import kotlin.random.nextInt
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
@@ -49,12 +43,12 @@ class NotesListViewModel @Inject constructor(
     )
 
     init {
-        observeAlNotesFlow()
+        observeAllNotesFlow()
         observeQueryFlowAndSearchForNotes()
         observeSelectedNotes()
     }
 
-    fun observeAlNotesFlow() {
+    fun observeAllNotesFlow() {
         _uiState.value = _uiState.value.copy(isLoading = true)
         getAllNotesUseCase.invoke()
             .map { notes ->

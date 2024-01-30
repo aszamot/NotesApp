@@ -130,7 +130,7 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>() {
     private fun setupSwipeRefreshLayout() {
         with(binding.swipeToRefresh) {
             setupToolbarOffset()
-            setOnRefreshListener { viewModel.observeAlNotesFlow() }
+            setOnRefreshListener { viewModel.observeAllNotesFlow() }
         }
     }
 
