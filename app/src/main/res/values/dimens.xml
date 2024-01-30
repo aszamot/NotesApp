@@ -2,4 +2,7 @@
 <resources>
     <dimen name="refresher_offset_start">40dp</dimen>
     <dimen name="refresher_offset_end">88dp</dimen>
+
+    <dimen name="menu_selected_item_corner_radius">16dp</dimen>
+    <dimen name="bottom_sheet_dialog_corner_radius">16dp</dimen>
 </resources>

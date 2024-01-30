@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +24,7 @@ import pl.atk.notes.domain.exceptions.NoteIsInTrashException
 import pl.atk.notes.domain.exceptions.NoteNotFoundException
 import pl.atk.notes.presentation.model.NoteItemUi
 import pl.atk.notes.presentation.screens.base.BaseFragment
+import pl.atk.notes.presentation.screens.menu.CurrentMenuItem
 import pl.atk.notes.presentation.utils.adapters.NotesAdapter
 import pl.atk.notes.utils.extensions.empty
 import pl.atk.notes.utils.extensions.setupToolbarOffset
@@ -90,8 +91,15 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>() {
 
     private fun setupSearchBar() {
         binding.searchBar.setNavigationOnClickListener {
-            showSnackbar("SHOW MENU DIALOG")
+            showMenuDialog()
         }
+    }
+
+    private fun showMenuDialog() {
+        val action = NotesListFragmentDirections.actionNotesListFragmentToMenuDialog(
+            currentMenuItem = CurrentMenuItem.NOTES
+        )
+        findNavController().navigate(action)
     }
 
     private fun setupSearchView() {

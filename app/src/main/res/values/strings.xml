@@ -12,6 +12,11 @@
     <string name="note_archive">Archive</string>
     <string name="note_put_to_trash">Put to trash</string>
 
+    <!-- SCREEN TITLES -->
+    <string name="title_notes">Notes</string>
+    <string name="title_archive">Archive</string>
+    <string name="title_trash">Trash</string>
+
     <!-- NOTES LIST FRAGMENT -->
     <string name="empty_notes_description">No notes.\nAdd your first one by pressing plus button.</string>
 

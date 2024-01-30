@@ -8,6 +8,19 @@
     <fragment
         android:id="@+id/notesListFragment"
         android:name="pl.atk.notes.presentation.screens.notes.NotesListFragment"
-        android:label="NotesListFragment"
-        tools:layout="@layout/fragment_notes_list" />
+        android:label="@string/title_notes"
+        tools:layout="@layout/fragment_notes_list">
+        <action
+            android:id="@+id/action_notesListFragment_to_menuDialog"
+            app:destination="@id/menuDialog" />
+    </fragment>
+    <dialog
+        android:id="@+id/menuDialog"
+        android:name="pl.atk.notes.presentation.screens.menu.MenuDialog"
+        android:label="MenuDialog"
+        tools:layout="@layout/dialog_menu">
+        <argument
+            android:name="currentMenuItem"
+            app:argType="pl.atk.notes.presentation.screens.menu.CurrentMenuItem" />
+    </dialog>
 </navigation>
