@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import pl.atk.notes.databinding.ItemNoteBinding
 import pl.atk.notes.presentation.model.NoteItemUi
 import pl.atk.notes.utils.extensions.dpToPixels
-import timber.log.Timber
 
 class NotesAdapter(
     private val onNoteClickListener: ((NoteItemUi) -> Unit)? = null,
@@ -46,7 +45,6 @@ class NotesAdapter(
                 tvNoteTitle.text = note.title
                 tvNoteContent.text = note.content
 
-                Timber.d(note.isSelected.toString())
                 card.strokeWidth = card.context.dpToPixels(
                     if (note.isSelected) CARD_STROKE_SELECTED_WIDTH else CARD_STROKE_NOT_SELECTED_WIDTH
                 )
