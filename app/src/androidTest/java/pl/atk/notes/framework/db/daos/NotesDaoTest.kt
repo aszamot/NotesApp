@@ -106,15 +106,30 @@ class NotesDaoTest {
     }
 
     @Test
+    fun getArchivedNotesFlow_shouldReturnSearchedArchivedNotes() = runTest {
+        val query = "test"
+        val noteEntities = listOf(
+            TEST_NOTE_1.copy(isArchived = true, title = "Test 1"),
+            TEST_NOTE_2.copy(isArchived = true, title = "Test 1")
+        )
+        noteEntities.forEach { notesDao.addNote(it) }
+
+        notesDao.searchArchivedNotesFlow(query).test {
+            val list = awaitItem()
+            assertEquals(noteEntities, list)
+            cancel()
+        }
+    }
+
+    @Test
     fun getArchivedNotesFlow_shouldReturnArchivedNotes() = runTest {
-        val query = "title"
         val noteEntities = listOf(
             TEST_NOTE_1.copy(isArchived = true),
             TEST_NOTE_2.copy(isArchived = true)
         )
         noteEntities.forEach { notesDao.addNote(it) }
 
-        notesDao.getArchivedNotesFlow(query).test {
+        notesDao.getArchivedNotesFlow().test {
             val list = awaitItem()
             assertEquals(noteEntities, list)
             cancel()
@@ -123,14 +138,13 @@ class NotesDaoTest {
 
     @Test
     fun getInTrashNotesFlow_shouldReturnNotesInTrash() = runTest {
-        val query = "title"
         val noteEntities = listOf(
             TEST_NOTE_1.copy(isInTrash = true),
             TEST_NOTE_2.copy(isInTrash = true)
         )
         noteEntities.forEach { notesDao.addNote(it) }
 
-        notesDao.getInTrashNotesFlow(query).test {
+        notesDao.getInTrashNotesFlow().test {
             val list = awaitItem()
             assertEquals(noteEntities, list)
             cancel()

@@ -13,6 +13,7 @@ interface LocalNotesDataSource {
     suspend fun deleteNote(noteId: UUID)
     fun getNotesFlow(): Flow<List<Note>>
     fun searchNotesFlow(query: String?): Flow<List<Note>>
-    fun getArchivedNotesFlow(query: String? = null): Flow<List<Note>>
-    fun getInTrashNotesFlow(query: String? = null): Flow<List<Note>>
+    fun getArchivedNotesFlow(): Flow<List<Note>>
+    fun searchArchivedNotesFlow(query: String?): Flow<List<Note>>
+    fun getInTrashNotesFlow(): Flow<List<Note>>
 }

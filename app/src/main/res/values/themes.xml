@@ -15,6 +15,7 @@
         <item name="colorOnBackground">@color/gray900</item>
 
         <item name="colorSurface">?colorPrimary</item>
+        <item name="colorSurfaceContainer">?colorPrimary</item>
         <item name="colorOnSurface">?attr/colorOnBackground</item>
         <item name="colorSurfaceContainerHigh">?colorPrimary</item>
 

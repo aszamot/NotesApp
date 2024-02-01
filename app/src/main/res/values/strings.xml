@@ -4,12 +4,15 @@
     <!-- COMMON -->
     <string name="note_deleted">Note was deleted.</string>
     <string name="note_trashed">Note was put to trash.</string>
-    <string name="notes_trashed">Notes was put to trash.</string>
+    <string name="notes_trashed">Notes were put to trash.</string>
     <string name="search_notes">Search notes…</string>
     <string name="notes_empty_search_description">No notes found.</string>
     <string name="note_archived">Note was archived.</string>
-    <string name="notes_archived">Notes was archived.</string>
+    <string name="notes_archived">Notes were archived.</string>
+    <string name="notes_unarchived">Notes were removed from archived.</string>
     <string name="note_archive">Archive</string>
+    <string name="note_search">Search</string>
+    <string name="note_unarchive">Unarchive</string>
     <string name="note_put_to_trash">Put to trash</string>
 
     <!-- SCREEN TITLES -->
@@ -20,6 +23,9 @@
     <!-- NOTES LIST FRAGMENT -->
     <string name="empty_notes_description">No notes.\nAdd your first one by pressing plus button.</string>
 
+    <!-- NOTES ARCHIVE -->
+    <string name="empty_archive_description">No notes in archive.</string>
+
     <!-- CONTENT DESCRIPTIONS -->
     <string name="content_description_add_note_fab">Button to open add new note screen.</string>
     <string name="content_description_toolbar_menu">Button to open navigation menu dialog.</string>
@@ -27,5 +33,5 @@
     <!-- ERRORS -->
     <string name="error">Error</string>
     <string name="error_archive_note_in_trash">Cannot archive note in trash.</string>
-    <string name="error_note_not_found">Cannot archive note in trash.</string>
+    <string name="error_note_not_found">Note not found.</string>
 </resources>

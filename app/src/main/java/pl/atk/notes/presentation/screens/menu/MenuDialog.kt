@@ -55,7 +55,7 @@ class MenuDialog : BaseBottomSheetDialogFragment<DialogMenuBinding>() {
         if (currentMenuItem == CurrentMenuItem.ARCHIVE)
             dismiss()
         else {
-
+            findNavController().navigate(MenuDialogDirections.actionMenuDialogToArchiveFragment())
         }
     }
 

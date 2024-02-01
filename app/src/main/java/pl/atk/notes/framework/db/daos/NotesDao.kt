@@ -31,9 +31,12 @@ interface NotesDao {
     @Query("SELECT * FROM notes WHERE is_archived = 0 AND is_in_trash = 0 AND CASE WHEN :query != '' THEN LOWER(title) LIKE '%' || LOWER(:query) || '%' OR LOWER(content) LIKE '%' || LOWER(:query) || '%' ELSE 0 END ")
     fun searchNotesFlow(query: String): Flow<List<NoteEntity>>
 
-    @Query("SELECT * FROM notes WHERE (:query = '' OR LOWER(title) LIKE '%' || LOWER(:query) || '%' OR LOWER(content) LIKE '%' || LOWER(:query) || '%') AND is_archived = 1")
-    fun getArchivedNotesFlow(query: String): Flow<List<NoteEntity>>
+    @Query("SELECT * FROM notes WHERE is_archived = 1 AND is_in_trash = 0")
+    fun getArchivedNotesFlow(): Flow<List<NoteEntity>>
 
-    @Query("SELECT * FROM notes WHERE (:query = '' OR LOWER(title) LIKE '%' || LOWER(:query) || '%' OR LOWER(content) LIKE '%' || LOWER(:query) || '%') AND is_in_trash = 1")
-    fun getInTrashNotesFlow(query: String): Flow<List<NoteEntity>>
+    @Query("SELECT * FROM notes WHERE is_archived = 1 AND is_in_trash = 0 AND CASE WHEN :query != '' THEN LOWER(title) LIKE '%' || LOWER(:query) || '%' OR LOWER(content) LIKE '%' || LOWER(:query) || '%' ELSE 0 END ")
+    fun searchArchivedNotesFlow(query: String): Flow<List<NoteEntity>>
+
+    @Query("SELECT * FROM notes WHERE is_in_trash = 1")
+    fun getInTrashNotesFlow(): Flow<List<NoteEntity>>
 }

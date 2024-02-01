@@ -16,7 +16,6 @@ import pl.atk.notes.framework.db.models.NoteEntity
 import pl.atk.notes.utils.extensions.empty
 import pl.atk.notes.utils.extensions.toNote
 import pl.atk.notes.utils.extensions.toNoteEntity
-import timber.log.Timber
 import java.util.UUID
 import javax.inject.Inject
 
@@ -101,8 +100,8 @@ class LocalNotesDataSourceImpl @Inject constructor(
             }
     }
 
-    override fun getArchivedNotesFlow(query: String?): Flow<List<Note>> {
-        return notesDao.getArchivedNotesFlow(query ?: String.empty)
+    override fun getArchivedNotesFlow(): Flow<List<Note>> {
+        return notesDao.getArchivedNotesFlow()
             .flowOn(ioDispatcher)
             .distinctUntilChanged()
             .map { notes ->
@@ -110,8 +109,17 @@ class LocalNotesDataSourceImpl @Inject constructor(
             }
     }
 
-    override fun getInTrashNotesFlow(query: String?): Flow<List<Note>> {
-        return notesDao.getInTrashNotesFlow(query ?: String.empty)
+    override fun searchArchivedNotesFlow(query: String?): Flow<List<Note>> {
+        return notesDao.searchArchivedNotesFlow(query ?: String.empty)
+            .flowOn(ioDispatcher)
+            .distinctUntilChanged()
+            .map { notes ->
+                notes.map { it.toNote() }
+            }
+    }
+
+    override fun getInTrashNotesFlow(): Flow<List<Note>> {
+        return notesDao.getInTrashNotesFlow()
             .flowOn(ioDispatcher)
             .distinctUntilChanged()
             .map { notes ->

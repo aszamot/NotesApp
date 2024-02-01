@@ -177,12 +177,25 @@ class LocalNotesDataSourceImplTest {
 
     @Test
     fun getArchivedNotesFlow_shouldReturnNotes() = runTest {
+        val noteEntities = listOf(TestData.TEST_NOTE_1.toNoteEntity(), TestData.TEST_NOTE_2.toNoteEntity())
+
+        whenever(notesDao.getArchivedNotesFlow()).thenReturn(flowOf(noteEntities))
+
+        dataSource.getArchivedNotesFlow().test {
+            val list = awaitItem()
+            Assert.assertEquals(noteEntities.map { it.toNote() }, list)
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun searchArchivedNotesFlow_shouldReturnNotes() = runTest {
         val query = "test"
         val noteEntities = listOf(TestData.TEST_NOTE_1.toNoteEntity(), TestData.TEST_NOTE_2.toNoteEntity())
 
-        whenever(notesDao.getArchivedNotesFlow(query)).thenReturn(flowOf(noteEntities))
+        whenever(notesDao.searchArchivedNotesFlow(query)).thenReturn(flowOf(noteEntities))
 
-        dataSource.getArchivedNotesFlow(query).test {
+        dataSource.searchArchivedNotesFlow(query).test {
             val list = awaitItem()
             Assert.assertEquals(noteEntities.map { it.toNote() }, list)
             awaitComplete()
@@ -191,12 +204,11 @@ class LocalNotesDataSourceImplTest {
 
     @Test
     fun getInTrashNotesFlow_shouldReturnNotes() = runTest {
-        val query = "test"
         val noteEntities = listOf(TestData.TEST_NOTE_1.toNoteEntity(), TestData.TEST_NOTE_2.toNoteEntity())
 
-        whenever(notesDao.getInTrashNotesFlow(query)).thenReturn(flowOf(noteEntities))
+        whenever(notesDao.getInTrashNotesFlow()).thenReturn(flowOf(noteEntities))
 
-        dataSource.getInTrashNotesFlow(query).test {
+        dataSource.getInTrashNotesFlow().test {
             val list = awaitItem()
             Assert.assertEquals(noteEntities.map { it.toNote() }, list)
             awaitComplete()

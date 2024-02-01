@@ -37,8 +37,8 @@ class NotesRepositoryImpl @Inject constructor(
     ): Flow<List<Note>> {
         val query = searchNotesQuery?.query
         val flow = when (filterNotesByType) {
-            is FilterNotesByType.Archived -> localNotesDataSource.getArchivedNotesFlow(query)
-            is FilterNotesByType.InTrash -> localNotesDataSource.getInTrashNotesFlow(query)
+            is FilterNotesByType.Archived -> localNotesDataSource.searchArchivedNotesFlow(query)
+            is FilterNotesByType.InTrash -> localNotesDataSource.getInTrashNotesFlow()
             else -> localNotesDataSource.searchNotesFlow(query)
         }
         return flow.flowOn(ioDispatcher)

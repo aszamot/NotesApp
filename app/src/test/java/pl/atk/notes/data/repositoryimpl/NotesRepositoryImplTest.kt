@@ -106,7 +106,7 @@ class NotesRepositoryImplTest {
         val query = "test"
         repository.searchNotesFlow(SearchNotesQuery(query), FilterNotesByType.Archived)
 
-        verify(localNotesDataSource).getArchivedNotesFlow(query)
+        verify(localNotesDataSource).searchArchivedNotesFlow(query)
     }
 
     @Test
@@ -114,7 +114,7 @@ class NotesRepositoryImplTest {
         val query = "test"
         repository.searchNotesFlow(SearchNotesQuery(query), FilterNotesByType.InTrash)
 
-        verify(localNotesDataSource).getInTrashNotesFlow(query)
+        verify(localNotesDataSource).getInTrashNotesFlow()
     }
 
     @Test
@@ -134,7 +134,7 @@ class NotesRepositoryImplTest {
     fun searchNotesFlow_withArchivedFilter_shouldReturnSearchedNotes() = runTest {
         val query = SearchNotesQuery("test")
         val notes = listOf(TestData.TEST_NOTE_1, TestData.TEST_NOTE_2)
-        whenever(localNotesDataSource.getArchivedNotesFlow(query.query)).thenReturn(flowOf(notes))
+        whenever(localNotesDataSource.searchArchivedNotesFlow(query.query)).thenReturn(flowOf(notes))
 
         repository.searchNotesFlow(query, FilterNotesByType.Archived).test {
             val list = awaitItem()
@@ -147,7 +147,7 @@ class NotesRepositoryImplTest {
     fun searchNotesFlow_withTrashFilter_shouldReturnSearchedNotes() = runTest {
         val query = SearchNotesQuery("test")
         val notes = listOf(TestData.TEST_NOTE_1, TestData.TEST_NOTE_2)
-        whenever(localNotesDataSource.getInTrashNotesFlow(query.query)).thenReturn(flowOf(notes))
+        whenever(localNotesDataSource.getInTrashNotesFlow()).thenReturn(flowOf(notes))
 
         repository.searchNotesFlow(query, FilterNotesByType.InTrash).test {
             val list = awaitItem()
