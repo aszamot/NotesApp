@@ -10,10 +10,14 @@
     <string name="note_archived">Note was archived.</string>
     <string name="notes_archived">Notes were archived.</string>
     <string name="notes_unarchived">Notes were removed from archived.</string>
+    <string name="notes_deleted">Notes were deleted.</string>
+    <string name="notes_un_trashed">Notes were removed from trash.</string>
     <string name="note_archive">Archive</string>
     <string name="note_search">Search</string>
     <string name="note_unarchive">Unarchive</string>
     <string name="note_put_to_trash">Put to trash</string>
+    <string name="note_delete_forever">Delete forever</string>
+    <string name="note_remove_from_trash">Remove from trash</string>
 
     <!-- SCREEN TITLES -->
     <string name="title_notes">Notes</string>
@@ -25,6 +29,9 @@
 
     <!-- NOTES ARCHIVE -->
     <string name="empty_archive_description">No notes in archive.</string>
+
+    <!-- NOTES TRASH -->
+    <string name="empty_trash_description">No notes in trash.</string>
 
     <!-- CONTENT DESCRIPTIONS -->
     <string name="content_description_add_note_fab">Button to open add new note screen.</string>

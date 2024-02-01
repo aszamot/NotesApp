@@ -63,7 +63,7 @@ class MenuDialog : BaseBottomSheetDialogFragment<DialogMenuBinding>() {
         if (currentMenuItem == CurrentMenuItem.TRASH)
             dismiss()
         else {
-
+            findNavController().navigate(MenuDialogDirections.actionMenuDialogToTrashFragment())
         }
     }
 }

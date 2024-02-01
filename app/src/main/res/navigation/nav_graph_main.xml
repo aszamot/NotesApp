@@ -25,14 +25,26 @@
         <action
             android:id="@+id/action_menuDialog_to_archiveFragment"
             app:destination="@id/archiveFragment" />
+        <action
+            android:id="@+id/action_menuDialog_to_trashFragment"
+            app:destination="@id/trashFragment" />
     </dialog>
     <fragment
         android:id="@+id/archiveFragment"
         android:name="pl.atk.notes.presentation.screens.archive.ArchiveFragment"
-        tools:layout="@layout/fragment_archive"
-        android:label="ArchiveFragment" >
+        android:label="ArchiveFragment"
+        tools:layout="@layout/fragment_archive">
         <action
             android:id="@+id/action_archiveFragment_to_menuDialog"
+            app:destination="@id/menuDialog" />
+    </fragment>
+    <fragment
+        android:id="@+id/trashFragment"
+        android:name="pl.atk.notes.presentation.screens.trash.TrashFragment"
+        android:label="TrashFragment"
+        tools:layout="@layout/fragment_trash" >
+        <action
+            android:id="@+id/action_trashFragment_to_menuDialog"
             app:destination="@id/menuDialog" />
     </fragment>
 </navigation>
