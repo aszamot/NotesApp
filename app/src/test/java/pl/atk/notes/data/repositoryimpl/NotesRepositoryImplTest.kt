@@ -177,7 +177,8 @@ class NotesRepositoryImplTest {
     @Test(expected = NoteIsInTrashException::class)
     fun archiveNote_noteInTrash_shouldThrowNoteIsInTrashException() = runTest {
         val noteId = UUID.randomUUID()
-        doAnswer { throw NoteIsInTrashException() }.whenever(localNotesDataSource).archiveNote(noteId)
+        doAnswer { throw NoteIsInTrashException() }.whenever(localNotesDataSource)
+            .archiveNote(noteId)
 
         repository.archiveNote(noteId)
     }
@@ -185,7 +186,8 @@ class NotesRepositoryImplTest {
     @Test(expected = NoteNotFoundException::class)
     fun archiveNote_noteNotFound_shouldThrowNoteNotFoundException() = runTest {
         val noteId = UUID.randomUUID()
-        doAnswer { throw NoteNotFoundException() }.whenever(localNotesDataSource).archiveNote(noteId)
+        doAnswer { throw NoteNotFoundException() }.whenever(localNotesDataSource)
+            .archiveNote(noteId)
 
         repository.archiveNote(noteId)
     }
@@ -202,7 +204,8 @@ class NotesRepositoryImplTest {
     @Test(expected = NoteIsInTrashException::class)
     fun unArchiveNote_noteInTrash_shouldThrowNoteIsInTrashException() = runTest {
         val noteId = UUID.randomUUID()
-        doAnswer { throw NoteIsInTrashException() }.whenever(localNotesDataSource).unArchiveNote(noteId)
+        doAnswer { throw NoteIsInTrashException() }.whenever(localNotesDataSource)
+            .unArchiveNote(noteId)
 
         repository.unArchiveNote(noteId)
     }
@@ -210,7 +213,8 @@ class NotesRepositoryImplTest {
     @Test(expected = NoteNotFoundException::class)
     fun unarchiveNote_noteNotFound_shouldThrowNoteNotFoundException() = runTest {
         val noteId = UUID.randomUUID()
-        doAnswer { throw NoteNotFoundException() }.whenever(localNotesDataSource).unArchiveNote(noteId)
+        doAnswer { throw NoteNotFoundException() }.whenever(localNotesDataSource)
+            .unArchiveNote(noteId)
 
         repository.unArchiveNote(noteId)
     }
@@ -244,7 +248,8 @@ class NotesRepositoryImplTest {
     @Test(expected = NoteNotFoundException::class)
     fun unTrashNote_noteNotFound_shouldThrowNoteNotFoundException() = runTest {
         val noteId = UUID.randomUUID()
-        doAnswer { throw NoteNotFoundException() }.whenever(localNotesDataSource).unTrashNote(noteId)
+        doAnswer { throw NoteNotFoundException() }.whenever(localNotesDataSource)
+            .unTrashNote(noteId)
 
         repository.unTrashNote(noteId)
     }
@@ -256,5 +261,12 @@ class NotesRepositoryImplTest {
         repository.deleteNote(noteId)
 
         verify(localNotesDataSource).deleteNote(noteId)
+    }
+
+    @Test
+    fun deleteAllNotesInTrash_shouldCallLocalDataSourceDeleteAllNotesInTrash() = runTest {
+        repository.deleteAllNotesInTrash()
+
+        verify(localNotesDataSource).deleteAllNotesInTrash()
     }
 }

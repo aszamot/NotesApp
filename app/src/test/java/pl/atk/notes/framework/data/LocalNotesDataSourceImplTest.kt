@@ -149,9 +149,17 @@ class LocalNotesDataSourceImplTest {
     }
 
     @Test
+    fun deleteAllNotesInTrash_shouldCallDaoDeleteAllNotesInTrash() = runTest {
+        dataSource.deleteAllNotesInTrash()
+
+        verify(notesDao).deleteAllNotesInTrash()
+    }
+
+    @Test
     fun searchNotesFlow_shouldReturnNotes() = runTest {
         val query = "test"
-        val noteEntities = listOf(TestData.TEST_NOTE_1.toNoteEntity(), TestData.TEST_NOTE_2.toNoteEntity())
+        val noteEntities =
+            listOf(TestData.TEST_NOTE_1.toNoteEntity(), TestData.TEST_NOTE_2.toNoteEntity())
 
         whenever(notesDao.searchNotesFlow(query)).thenReturn(flowOf(noteEntities))
 
@@ -164,7 +172,8 @@ class LocalNotesDataSourceImplTest {
 
     @Test
     fun getNotesFlow_shouldReturnNotes() = runTest {
-        val noteEntities = listOf(TestData.TEST_NOTE_1.toNoteEntity(), TestData.TEST_NOTE_2.toNoteEntity())
+        val noteEntities =
+            listOf(TestData.TEST_NOTE_1.toNoteEntity(), TestData.TEST_NOTE_2.toNoteEntity())
 
         whenever(notesDao.getAllNotesFlow()).thenReturn(flowOf(noteEntities))
 
@@ -177,7 +186,8 @@ class LocalNotesDataSourceImplTest {
 
     @Test
     fun getArchivedNotesFlow_shouldReturnNotes() = runTest {
-        val noteEntities = listOf(TestData.TEST_NOTE_1.toNoteEntity(), TestData.TEST_NOTE_2.toNoteEntity())
+        val noteEntities =
+            listOf(TestData.TEST_NOTE_1.toNoteEntity(), TestData.TEST_NOTE_2.toNoteEntity())
 
         whenever(notesDao.getArchivedNotesFlow()).thenReturn(flowOf(noteEntities))
 
@@ -191,7 +201,8 @@ class LocalNotesDataSourceImplTest {
     @Test
     fun searchArchivedNotesFlow_shouldReturnNotes() = runTest {
         val query = "test"
-        val noteEntities = listOf(TestData.TEST_NOTE_1.toNoteEntity(), TestData.TEST_NOTE_2.toNoteEntity())
+        val noteEntities =
+            listOf(TestData.TEST_NOTE_1.toNoteEntity(), TestData.TEST_NOTE_2.toNoteEntity())
 
         whenever(notesDao.searchArchivedNotesFlow(query)).thenReturn(flowOf(noteEntities))
 
@@ -204,7 +215,8 @@ class LocalNotesDataSourceImplTest {
 
     @Test
     fun getInTrashNotesFlow_shouldReturnNotes() = runTest {
-        val noteEntities = listOf(TestData.TEST_NOTE_1.toNoteEntity(), TestData.TEST_NOTE_2.toNoteEntity())
+        val noteEntities =
+            listOf(TestData.TEST_NOTE_1.toNoteEntity(), TestData.TEST_NOTE_2.toNoteEntity())
 
         whenever(notesDao.getInTrashNotesFlow()).thenReturn(flowOf(noteEntities))
 

@@ -16,13 +16,10 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import pl.atk.notes.R
 import pl.atk.notes.databinding.FragmentTrashBinding
-import pl.atk.notes.domain.exceptions.NoteIsInTrashException
 import pl.atk.notes.domain.exceptions.NoteNotFoundException
 import pl.atk.notes.presentation.model.NoteItemUi
-import pl.atk.notes.presentation.screens.archive.ArchiveFragmentDirections
 import pl.atk.notes.presentation.screens.base.BaseFragment
 import pl.atk.notes.presentation.screens.menu.CurrentMenuItem
-import pl.atk.notes.presentation.screens.notes.NotesListUiState
 import pl.atk.notes.presentation.utils.adapters.NotesAdapter
 import pl.atk.notes.utils.extensions.empty
 

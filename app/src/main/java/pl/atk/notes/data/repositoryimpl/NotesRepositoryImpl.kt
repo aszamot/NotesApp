@@ -71,4 +71,8 @@ class NotesRepositoryImpl @Inject constructor(
     override suspend fun deleteNote(noteId: UUID) = withContext(ioDispatcher) {
         localNotesDataSource.deleteNote(noteId)
     }
+
+    override suspend fun deleteAllNotesInTrash() = withContext(ioDispatcher) {
+        localNotesDataSource.deleteAllNotesInTrash()
+    }
 }

@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menu_delete_forever"
-        android:icon="@drawable/ic_delete_forever"
-        android:title="@string/note_delete_forever"
-        app:showAsAction="ifRoom" />
+        android:title="@string/empty_trash"
+        app:showAsAction="never" />
 </menu>

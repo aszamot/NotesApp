@@ -82,6 +82,10 @@ class LocalNotesDataSourceImpl @Inject constructor(
         notesDao.delete(noteId)
     }
 
+    override suspend fun deleteAllNotesInTrash() = withContext(ioDispatcher) {
+        notesDao.deleteAllNotesInTrash()
+    }
+
     override fun searchNotesFlow(query: String?): Flow<List<Note>> {
         return notesDao.searchNotesFlow(query ?: String.empty)
             .flowOn(ioDispatcher)

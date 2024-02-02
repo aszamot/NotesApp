@@ -12,11 +12,11 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import pl.atk.notes.R
+import pl.atk.notes.domain.usecases.delete.DeleteAllNotesInTrashUseCase
 import pl.atk.notes.domain.usecases.delete.DeleteNoteUseCase
 import pl.atk.notes.domain.usecases.delete.UnTrashNoteUseCase
 import pl.atk.notes.domain.usecases.getnotes.GetTrashNotesUseCase
 import pl.atk.notes.presentation.model.NoteItemUi
-import pl.atk.notes.presentation.screens.notes.NotesListUiState
 import pl.atk.notes.utils.extensions.toNoteItemUi
 import javax.inject.Inject
 
@@ -24,7 +24,8 @@ import javax.inject.Inject
 class TrashViewModel @Inject constructor(
     private val getTrashNotesUseCase: GetTrashNotesUseCase,
     private val unTrashNoteUseCase: UnTrashNoteUseCase,
-    private val deleteNoteUseCase: DeleteNoteUseCase
+    private val deleteNoteUseCase: DeleteNoteUseCase,
+    private val deleteAllNotesInTrashUseCase: DeleteAllNotesInTrashUseCase
 ) : ViewModel() {
 
     private val _notesSelected = MutableStateFlow<MutableSet<NoteItemUi>>(mutableSetOf())
@@ -88,25 +89,21 @@ class TrashViewModel @Inject constructor(
 
     fun deleteSelectedNotes() {
         viewModelScope.launch {
-            deleteNotes(_notesSelected.value)
+            try {
+                _notesSelected.value.forEach { note ->
+                    deleteNoteUseCase.invoke(noteId = note.id)
+                }
+                _uiState.value = _uiState.value.copy(message = R.string.notes_deleted)
+                removeAllSelectedNote()
+            } catch (e: Exception) {
+                setError(e)
+            }
         }
     }
 
     fun deleteAllNotes() {
         viewModelScope.launch {
-            deleteNotes(_uiState.value.notes)
-        }
-    }
-
-    private suspend fun deleteNotes(notesList: Collection<NoteItemUi>) {
-        try {
-            notesList.forEach { note ->
-                deleteNoteUseCase.invoke(noteId = note.id)
-            }
-            _uiState.value = _uiState.value.copy(message = R.string.notes_deleted)
-            removeAllSelectedNote()
-        } catch (e: Exception) {
-            setError(e)
+            deleteAllNotesInTrashUseCase.invoke()
         }
     }
 

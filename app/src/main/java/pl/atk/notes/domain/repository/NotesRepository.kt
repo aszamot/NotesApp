@@ -20,4 +20,5 @@ interface NotesRepository {
     suspend fun trashNote(noteId: UUID)
     suspend fun unTrashNote(noteId: UUID)
     suspend fun deleteNote(noteId: UUID)
+    suspend fun deleteAllNotesInTrash()
 }

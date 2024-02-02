@@ -11,6 +11,7 @@ interface LocalNotesDataSource {
     suspend fun trashNote(noteId: UUID)
     suspend fun unTrashNote(noteId: UUID)
     suspend fun deleteNote(noteId: UUID)
+    suspend fun deleteAllNotesInTrash()
     fun getNotesFlow(): Flow<List<Note>>
     fun searchNotesFlow(query: String?): Flow<List<Note>>
     fun getArchivedNotesFlow(): Flow<List<Note>>

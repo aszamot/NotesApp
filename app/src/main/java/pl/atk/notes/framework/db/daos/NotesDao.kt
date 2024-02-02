@@ -25,6 +25,9 @@ interface NotesDao {
     @Query("DELETE FROM notes WHERE id = :noteId")
     suspend fun delete(noteId: UUID)
 
+    @Query("DELETE FROM notes WHERE is_in_trash = 1")
+    suspend fun deleteAllNotesInTrash()
+
     @Query("SELECT * FROM notes WHERE is_archived = 0 AND is_in_trash = 0")
     fun getAllNotesFlow(): Flow<List<NoteEntity>>
 

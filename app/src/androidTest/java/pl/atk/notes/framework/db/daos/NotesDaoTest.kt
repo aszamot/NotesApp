@@ -78,6 +78,19 @@ class NotesDaoTest {
     }
 
     @Test
+    fun deleteAllNotesInTrash_shouldDeleteAllNotesInTrash() = runTest {
+        val notesEntities = listOf(TEST_NOTE_1, TEST_NOTE_2.copy(isInTrash = true))
+        notesEntities.forEach { notesDao.addNote(it) }
+
+        notesDao.deleteAllNotesInTrash()
+        notesDao.getInTrashNotesFlow().test {
+            val list = awaitItem()
+            assertEquals(0, list.size)
+            cancel()
+        }
+    }
+
+    @Test
     fun getAllNotesFlow_shouldReturnAllNotes() = runTest {
         val noteEntities = listOf(TEST_NOTE_1, TEST_NOTE_2)
         noteEntities.forEach { notesDao.addNote(it) }
