@@ -2,23 +2,20 @@ package pl.atk.notes.domain.repository
 
 import kotlinx.coroutines.flow.Flow
 import pl.atk.notes.domain.models.Note
-import pl.atk.notes.domain.utils.FilterNotesByType
 import pl.atk.notes.domain.utils.SearchNotesQuery
 import java.util.UUID
 
 interface NotesRepository {
-    fun getAllNotesFlow(
-        filterNotesByType: FilterNotesByType?
-    ): Flow<List<Note>>
+    fun getAllNotesFlow(): Flow<List<Note>>
     fun searchNotesFlow(
-        searchNotesQuery: SearchNotesQuery?,
-        filterNotesByType: FilterNotesByType?
+        searchNotesQuery: SearchNotesQuery?
     ): Flow<List<Note>>
+
+    fun getNoteFlow(noteId: UUID?): Flow<Note?>
     suspend fun addNote(note: Note)
-    suspend fun archiveNote(noteId: UUID)
-    suspend fun unArchiveNote(noteId: UUID)
-    suspend fun trashNote(noteId: UUID)
-    suspend fun unTrashNote(noteId: UUID)
+    suspend fun updateNote(note: Note)
+    suspend fun updateNoteTitle(noteId: UUID, title: String?)
+    suspend fun updateNoteContent(noteId: UUID, content: String?)
     suspend fun deleteNote(noteId: UUID)
-    suspend fun deleteAllNotesInTrash()
+    suspend fun deleteAllNotes()
 }

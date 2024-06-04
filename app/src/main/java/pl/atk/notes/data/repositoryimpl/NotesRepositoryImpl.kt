@@ -7,13 +7,9 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import pl.atk.notes.data.local.LocalNotesDataSource
 import pl.atk.notes.di.IoDispatcher
-import pl.atk.notes.domain.exceptions.NoteIsInTrashException
-import pl.atk.notes.domain.exceptions.NoteNotFoundException
 import pl.atk.notes.domain.models.Note
 import pl.atk.notes.domain.repository.NotesRepository
-import pl.atk.notes.domain.utils.FilterNotesByType
 import pl.atk.notes.domain.utils.SearchNotesQuery
-import timber.log.Timber
 import java.util.UUID
 import javax.inject.Inject
 
@@ -22,57 +18,44 @@ class NotesRepositoryImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : NotesRepository {
 
-    override fun getAllNotesFlow(filterNotesByType: FilterNotesByType?): Flow<List<Note>> {
-        val flow = when (filterNotesByType) {
-            is FilterNotesByType.Archived -> localNotesDataSource.getArchivedNotesFlow()
-            is FilterNotesByType.InTrash -> localNotesDataSource.getInTrashNotesFlow()
-            else -> localNotesDataSource.getNotesFlow()
-        }
-        return flow.flowOn(ioDispatcher)
+    override fun getAllNotesFlow(): Flow<List<Note>> {
+        return localNotesDataSource.getNotesFlow().flowOn(ioDispatcher)
     }
 
     override fun searchNotesFlow(
         searchNotesQuery: SearchNotesQuery?,
-        filterNotesByType: FilterNotesByType?
     ): Flow<List<Note>> {
         val query = searchNotesQuery?.query
-        val flow = when (filterNotesByType) {
-            is FilterNotesByType.Archived -> localNotesDataSource.searchArchivedNotesFlow(query)
-            is FilterNotesByType.InTrash -> localNotesDataSource.getInTrashNotesFlow()
-            else -> localNotesDataSource.searchNotesFlow(query)
-        }
-        return flow.flowOn(ioDispatcher)
+        return localNotesDataSource.searchNotesFlow(query).flowOn(ioDispatcher)
+    }
+
+    override fun getNoteFlow(noteId: UUID?): Flow<Note?> {
+        return localNotesDataSource.getNoteFlow(noteId)
+            .flowOn(ioDispatcher)
     }
 
     override suspend fun addNote(note: Note) = withContext(ioDispatcher) {
         localNotesDataSource.addNote(note)
     }
 
-    @Throws(NoteIsInTrashException::class, NoteNotFoundException::class)
-    override suspend fun archiveNote(noteId: UUID) = withContext(ioDispatcher) {
-        localNotesDataSource.archiveNote(noteId)
+    override suspend fun updateNote(note: Note) = withContext(ioDispatcher) {
+        localNotesDataSource.updateNote(note)
     }
 
-    @Throws(NoteIsInTrashException::class, NoteNotFoundException::class)
-    override suspend fun unArchiveNote(noteId: UUID) = withContext(ioDispatcher) {
-        localNotesDataSource.unArchiveNote(noteId)
+    override suspend fun updateNoteTitle(noteId: UUID, title: String?) = withContext(ioDispatcher) {
+        localNotesDataSource.updateNoteTitle(noteId, title)
     }
 
-    @Throws(NoteNotFoundException::class)
-    override suspend fun trashNote(noteId: UUID) = withContext(ioDispatcher) {
-        localNotesDataSource.trashNote(noteId)
-    }
-
-    @Throws(NoteNotFoundException::class)
-    override suspend fun unTrashNote(noteId: UUID) = withContext(ioDispatcher) {
-        localNotesDataSource.unTrashNote(noteId)
-    }
+    override suspend fun updateNoteContent(noteId: UUID, content: String?) =
+        withContext(ioDispatcher) {
+            localNotesDataSource.updateNoteContent(noteId, content)
+        }
 
     override suspend fun deleteNote(noteId: UUID) = withContext(ioDispatcher) {
         localNotesDataSource.deleteNote(noteId)
     }
 
-    override suspend fun deleteAllNotesInTrash() = withContext(ioDispatcher) {
-        localNotesDataSource.deleteAllNotesInTrash()
+    override suspend fun deleteAllNotes() = withContext(ioDispatcher) {
+        localNotesDataSource.deleteAllNotes()
     }
 }

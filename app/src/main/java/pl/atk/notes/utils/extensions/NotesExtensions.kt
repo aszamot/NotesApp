@@ -8,9 +8,7 @@ fun Note.toNoteEntity() = NoteEntity(
     id = this.id,
     title = this.title,
     content = this.content,
-    timestamp = this.timestamp,
-    isInTrash = this.isInTrash,
-    isArchived = this.isArchived
+    timestamp = this.timestamp
 )
 
 fun Note.toNoteItemUi() = NoteItemUi(
@@ -23,7 +21,5 @@ fun NoteEntity.toNote() = Note(
     id = this.id,
     title = this.title,
     content = this.content,
-    timestamp = this.timestamp,
-    isInTrash = this.isInTrash,
-    isArchived = this.isArchived
+    timestamp = this.timestamp
 )

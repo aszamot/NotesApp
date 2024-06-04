@@ -4,16 +4,11 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mock
 import org.mockito.kotlin.doAnswer
-import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.mock
-import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
-import pl.atk.notes.TestData
 import pl.atk.notes.TestDispatcherRule
-import pl.atk.notes.domain.exceptions.NoteIsInTrashException
 import pl.atk.notes.domain.exceptions.NoteNotFoundException
 import pl.atk.notes.domain.repository.NotesRepository
 import java.util.UUID

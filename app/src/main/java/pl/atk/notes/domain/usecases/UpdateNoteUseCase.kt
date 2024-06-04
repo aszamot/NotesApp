@@ -7,11 +7,11 @@ import pl.atk.notes.domain.models.Note
 import pl.atk.notes.domain.repository.NotesRepository
 import javax.inject.Inject
 
-class AddNoteUseCase @Inject constructor(
+class UpdateNoteUseCase @Inject constructor(
     private val notesRepository: NotesRepository,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
     suspend operator fun invoke(note: Note) = withContext(ioDispatcher) {
-        notesRepository.addNote(note)
+        notesRepository.updateNote(note)
     }
 }

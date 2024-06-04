@@ -14,9 +14,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import pl.atk.notes.R
-import pl.atk.notes.domain.usecases.archive.ArchiveNoteUseCase
+import pl.atk.notes.domain.usecases.delete.DeleteNoteUseCase
 import pl.atk.notes.domain.usecases.getnotes.GetAllNotesUseCase
-import pl.atk.notes.domain.usecases.delete.TrashNoteUseCase
 import pl.atk.notes.domain.usecases.getnotes.SearchNotesUseCase
 import pl.atk.notes.presentation.model.NoteItemUi
 import pl.atk.notes.utils.extensions.empty
@@ -28,8 +27,7 @@ import javax.inject.Inject
 class NotesListViewModel @Inject constructor(
     private val getAllNotesUseCase: GetAllNotesUseCase,
     private val searchNotesUseCase: SearchNotesUseCase,
-    private val archiveNoteUseCase: ArchiveNoteUseCase,
-    private val trashNoteUseCase: TrashNoteUseCase
+    private val deleteNoteUseCase: DeleteNoteUseCase
 ) : ViewModel() {
 
     private val _query = MutableStateFlow(String.empty)
@@ -82,7 +80,6 @@ class NotesListViewModel @Inject constructor(
 
     private fun observeSelectedNotes() {
         _notesSelected.onEach { selectedNotes ->
-
             _uiState.value = _uiState.value.copy(
                 selectedNotesCount = selectedNotes.size,
                 isInNoteSelectedMode = selectedNotes.isNotEmpty(),
@@ -92,7 +89,7 @@ class NotesListViewModel @Inject constructor(
     }
 
     private fun setError(e: Throwable?) {
-        _uiState.value = _uiState.value.copy(error = e)
+        _uiState.value = _uiState.value.copy(error = e, isLoading = false)
     }
 
     fun setQuery(query: String) {
@@ -119,38 +116,13 @@ class NotesListViewModel @Inject constructor(
 
     fun isInNoteSelectedMode() = _uiState.value.isInNoteSelectedMode
 
-    fun archiveNote(noteItemUi: NoteItemUi) {
-        viewModelScope.launch {
-            try {
-                archiveNoteUseCase.invoke(noteItemUi.id)
-                _uiState.value = _uiState.value.copy(message = R.string.note_archived)
-            } catch (e: Exception) {
-                setError(e)
-            }
-        }
-    }
-
-    fun archiveSelectedNotes() {
+    fun deleteSelectedNotes() {
         viewModelScope.launch {
             try {
                 _notesSelected.value.forEach { note ->
-                    archiveNoteUseCase.invoke(noteId = note.id)
+                    deleteNoteUseCase.invoke(noteId = note.id)
                 }
-                _uiState.value = _uiState.value.copy(message = R.string.notes_archived)
-                removeAllSelectedNote()
-            } catch (e: Exception) {
-                setError(e)
-            }
-        }
-    }
-
-    fun trashSelectedNotes() {
-        viewModelScope.launch {
-            try {
-                _notesSelected.value.forEach { note ->
-                    trashNoteUseCase.invoke(noteId = note.id)
-                }
-                _uiState.value = _uiState.value.copy(message = R.string.notes_trashed)
+                _uiState.value = _uiState.value.copy(message = R.string.notes_deleted)
                 removeAllSelectedNote()
             } catch (e: Exception) {
                 setError(e)

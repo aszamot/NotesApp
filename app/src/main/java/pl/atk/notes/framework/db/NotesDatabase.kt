@@ -7,7 +7,7 @@ import pl.atk.notes.framework.db.models.NoteEntity
 
 @Database(
     entities = [NoteEntity::class],
-    version = 1
+    version = 2
 )
 abstract class NotesDatabase : RoomDatabase() {
 

@@ -16,8 +16,7 @@ class SearchNotesUseCase @Inject constructor(
     operator fun invoke(query: String): Flow<List<Note>> {
         val searchQuery = SearchNotesQuery(query)
         return notesRepository.searchNotesFlow(
-            searchNotesQuery = searchQuery,
-            filterNotesByType = null
+            searchNotesQuery = searchQuery
         ).flowOn(ioDispatcher)
     }
 }

@@ -11,40 +11,17 @@
         android:label="@string/title_notes"
         tools:layout="@layout/fragment_notes_list">
         <action
-            android:id="@+id/action_notesListFragment_to_menuDialog"
-            app:destination="@id/menuDialog" />
+            android:id="@+id/action_notesListFragment_to_noteDetailsFragment"
+            app:destination="@id/noteDetailsFragment" />
     </fragment>
-    <dialog
-        android:id="@+id/menuDialog"
-        android:name="pl.atk.notes.presentation.screens.menu.MenuDialog"
-        android:label="MenuDialog"
-        tools:layout="@layout/dialog_menu">
+    <fragment
+        android:id="@+id/noteDetailsFragment"
+        android:name="pl.atk.notes.presentation.screens.details.NoteDetailsFragment"
+        android:label="NoteDetailsFragment"
+        tools:layout="@layout/fragment_note_details" >
         <argument
-            android:name="currentMenuItem"
-            app:argType="pl.atk.notes.presentation.screens.menu.CurrentMenuItem" />
-        <action
-            android:id="@+id/action_menuDialog_to_archiveFragment"
-            app:destination="@id/archiveFragment" />
-        <action
-            android:id="@+id/action_menuDialog_to_trashFragment"
-            app:destination="@id/trashFragment" />
-    </dialog>
-    <fragment
-        android:id="@+id/archiveFragment"
-        android:name="pl.atk.notes.presentation.screens.archive.ArchiveFragment"
-        android:label="ArchiveFragment"
-        tools:layout="@layout/fragment_archive">
-        <action
-            android:id="@+id/action_archiveFragment_to_menuDialog"
-            app:destination="@id/menuDialog" />
-    </fragment>
-    <fragment
-        android:id="@+id/trashFragment"
-        android:name="pl.atk.notes.presentation.screens.trash.TrashFragment"
-        android:label="TrashFragment"
-        tools:layout="@layout/fragment_trash" >
-        <action
-            android:id="@+id/action_trashFragment_to_menuDialog"
-            app:destination="@id/menuDialog" />
+            android:name="noteId"
+            app:argType="java.util.UUID"
+            app:nullable="true" />
     </fragment>
 </navigation>

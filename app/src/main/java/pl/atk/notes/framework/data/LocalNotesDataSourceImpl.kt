@@ -8,11 +8,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import pl.atk.notes.data.local.LocalNotesDataSource
 import pl.atk.notes.di.IoDispatcher
-import pl.atk.notes.domain.exceptions.NoteIsInTrashException
-import pl.atk.notes.domain.exceptions.NoteNotFoundException
 import pl.atk.notes.domain.models.Note
 import pl.atk.notes.framework.db.daos.NotesDao
-import pl.atk.notes.framework.db.models.NoteEntity
 import pl.atk.notes.utils.extensions.empty
 import pl.atk.notes.utils.extensions.toNote
 import pl.atk.notes.utils.extensions.toNoteEntity
@@ -28,62 +25,46 @@ class LocalNotesDataSourceImpl @Inject constructor(
         notesDao.addNote(note.toNoteEntity())
     }
 
-    @Throws(NoteIsInTrashException::class, NoteNotFoundException::class)
-    override suspend fun archiveNote(noteId: UUID) = withContext(ioDispatcher) {
-        val note = tryToGetNote(noteId)
-        if (note.isInTrash)
-            throw NoteIsInTrashException()
-        else
-            notesDao.update(
-                note.copy(
-                    isArchived = true,
+    override suspend fun updateNote(note: Note) = withContext(ioDispatcher) {
+        notesDao.update(note.toNoteEntity())
+    }
+
+    override suspend fun updateNoteTitle(noteId: UUID, title: String?): Unit =
+        withContext(ioDispatcher) {
+            notesDao.getNote(noteId)?.let { note ->
+                val newNote = note.copy(
+                    title = title,
                     timestamp = System.currentTimeMillis()
                 )
-            )
-    }
+                notesDao.update(newNote)
+            }
+        }
 
-    @Throws(NoteIsInTrashException::class, NoteNotFoundException::class)
-    override suspend fun unArchiveNote(noteId: UUID) = withContext(ioDispatcher) {
-        val note = tryToGetNote(noteId)
-        if (note.isInTrash)
-            throw NoteIsInTrashException()
-        else
-            notesDao.update(
-                note.copy(
-                    isArchived = false,
+    override suspend fun updateNoteContent(noteId: UUID, content: String?): Unit =
+        withContext(ioDispatcher) {
+            notesDao.getNote(noteId)?.let { note ->
+                val newNote = note.copy(
+                    content = content,
                     timestamp = System.currentTimeMillis()
                 )
-            )
-    }
-
-    @Throws(NoteNotFoundException::class)
-    override suspend fun trashNote(noteId: UUID) = withContext(ioDispatcher) {
-        val note = tryToGetNote(noteId)
-        notesDao.update(
-            note.copy(
-                isInTrash = true,
-                timestamp = System.currentTimeMillis()
-            )
-        )
-    }
-
-    @Throws(NoteNotFoundException::class)
-    override suspend fun unTrashNote(noteId: UUID) = withContext(ioDispatcher) {
-        val note = tryToGetNote(noteId)
-        notesDao.update(
-            note.copy(
-                isInTrash = false,
-                timestamp = System.currentTimeMillis()
-            )
-        )
-    }
+                notesDao.update(newNote)
+            }
+        }
 
     override suspend fun deleteNote(noteId: UUID) = withContext(ioDispatcher) {
         notesDao.delete(noteId)
     }
 
-    override suspend fun deleteAllNotesInTrash() = withContext(ioDispatcher) {
-        notesDao.deleteAllNotesInTrash()
+    override suspend fun deleteAllNotes() = withContext(ioDispatcher) {
+        notesDao.deleteAllNotes()
+    }
+
+    override fun getNoteFlow(noteId: UUID?): Flow<Note?> {
+        return notesDao.getNoteFlow(noteId)
+            .flowOn(ioDispatcher)
+            .map { note ->
+                note?.toNote()
+            }
     }
 
     override fun searchNotesFlow(query: String?): Flow<List<Note>> {
@@ -102,41 +83,5 @@ class LocalNotesDataSourceImpl @Inject constructor(
             .map { notes ->
                 notes.map { it.toNote() }
             }
-    }
-
-    override fun getArchivedNotesFlow(): Flow<List<Note>> {
-        return notesDao.getArchivedNotesFlow()
-            .flowOn(ioDispatcher)
-            .distinctUntilChanged()
-            .map { notes ->
-                notes.map { it.toNote() }
-            }
-    }
-
-    override fun searchArchivedNotesFlow(query: String?): Flow<List<Note>> {
-        return notesDao.searchArchivedNotesFlow(query ?: String.empty)
-            .flowOn(ioDispatcher)
-            .distinctUntilChanged()
-            .map { notes ->
-                notes.map { it.toNote() }
-            }
-    }
-
-    override fun getInTrashNotesFlow(): Flow<List<Note>> {
-        return notesDao.getInTrashNotesFlow()
-            .flowOn(ioDispatcher)
-            .distinctUntilChanged()
-            .map { notes ->
-                notes.map { it.toNote() }
-            }
-    }
-
-    @Throws(NoteNotFoundException::class)
-    private suspend fun tryToGetNote(noteId: UUID): NoteEntity {
-        val note = notesDao.getNote(noteId)
-        if (note == null) {
-            throw NoteNotFoundException()
-        } else
-            return note
     }
 }

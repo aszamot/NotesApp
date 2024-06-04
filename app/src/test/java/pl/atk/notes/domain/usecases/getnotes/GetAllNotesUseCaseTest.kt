@@ -32,13 +32,13 @@ class GetAllNotesUseCaseTest {
     fun invoke_shouldUseRepositoryGetAllNotesFlowWithNullFilter() = runTest {
         useCase.invoke()
 
-        verify(notesRepository).getAllNotesFlow(null)
+        verify(notesRepository).getAllNotesFlow()
     }
 
     @Test
     fun invoke_shouldReturnNotesFromNotesRepository() = runTest {
         val notes = listOf(TestData.TEST_NOTE_1, TestData.TEST_NOTE_2)
-        whenever(notesRepository.getAllNotesFlow(null)).thenReturn(flowOf(notes))
+        whenever(notesRepository.getAllNotesFlow()).thenReturn(flowOf(notes))
 
         useCase.invoke().test {
             val list = awaitItem()

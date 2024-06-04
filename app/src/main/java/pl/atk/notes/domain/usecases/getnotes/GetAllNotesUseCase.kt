@@ -10,7 +10,5 @@ class GetAllNotesUseCase @Inject constructor(
     private val notesRepository: NotesRepository,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
-    operator fun invoke() = notesRepository.getAllNotesFlow(
-        filterNotesByType = null
-    ).flowOn(ioDispatcher)
+    operator fun invoke() = notesRepository.getAllNotesFlow().flowOn(ioDispatcher)
 }

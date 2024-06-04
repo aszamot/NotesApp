@@ -13,7 +13,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import pl.atk.notes.TestData
 import pl.atk.notes.TestData.Companion.TEST_NOTE_1
 import pl.atk.notes.TestData.Companion.TEST_NOTE_2
 import pl.atk.notes.TestDispatcherRule
@@ -78,19 +77,6 @@ class NotesDaoTest {
     }
 
     @Test
-    fun deleteAllNotesInTrash_shouldDeleteAllNotesInTrash() = runTest {
-        val notesEntities = listOf(TEST_NOTE_1, TEST_NOTE_2.copy(isInTrash = true))
-        notesEntities.forEach { notesDao.addNote(it) }
-
-        notesDao.deleteAllNotesInTrash()
-        notesDao.getInTrashNotesFlow().test {
-            val list = awaitItem()
-            assertEquals(0, list.size)
-            cancel()
-        }
-    }
-
-    @Test
     fun getAllNotesFlow_shouldReturnAllNotes() = runTest {
         val noteEntities = listOf(TEST_NOTE_1, TEST_NOTE_2)
         noteEntities.forEach { notesDao.addNote(it) }
@@ -117,51 +103,4 @@ class NotesDaoTest {
             cancel()
         }
     }
-
-    @Test
-    fun getArchivedNotesFlow_shouldReturnSearchedArchivedNotes() = runTest {
-        val query = "test"
-        val noteEntities = listOf(
-            TEST_NOTE_1.copy(isArchived = true, title = "Test 1"),
-            TEST_NOTE_2.copy(isArchived = true, title = "Test 1")
-        )
-        noteEntities.forEach { notesDao.addNote(it) }
-
-        notesDao.searchArchivedNotesFlow(query).test {
-            val list = awaitItem()
-            assertEquals(noteEntities, list)
-            cancel()
-        }
-    }
-
-    @Test
-    fun getArchivedNotesFlow_shouldReturnArchivedNotes() = runTest {
-        val noteEntities = listOf(
-            TEST_NOTE_1.copy(isArchived = true),
-            TEST_NOTE_2.copy(isArchived = true)
-        )
-        noteEntities.forEach { notesDao.addNote(it) }
-
-        notesDao.getArchivedNotesFlow().test {
-            val list = awaitItem()
-            assertEquals(noteEntities, list)
-            cancel()
-        }
-    }
-
-    @Test
-    fun getInTrashNotesFlow_shouldReturnNotesInTrash() = runTest {
-        val noteEntities = listOf(
-            TEST_NOTE_1.copy(isInTrash = true),
-            TEST_NOTE_2.copy(isInTrash = true)
-        )
-        noteEntities.forEach { notesDao.addNote(it) }
-
-        notesDao.getInTrashNotesFlow().test {
-            val list = awaitItem()
-            assertEquals(noteEntities, list)
-            cancel()
-        }
-    }
-
 }

@@ -9,6 +9,7 @@
     <string name="notes_empty_search_description">No notes found.</string>
     <string name="note_archived">Note was archived.</string>
     <string name="notes_archived">Notes were archived.</string>
+    <string name="note_unarchived">Note was removed from archive.</string>
     <string name="notes_unarchived">Notes were removed from archived.</string>
     <string name="notes_deleted">Notes were deleted.</string>
     <string name="notes_un_trashed">Notes were removed from trash.</string>
@@ -33,6 +34,11 @@
     <!-- NOTES TRASH -->
     <string name="empty_trash_description">No notes in trash.</string>
     <string name="empty_trash">Empty trash</string>
+
+    <!-- NOTE DETAILS -->
+    <string name="note_title">Title</string>
+    <string name="note_content">Content</string>
+    <string name="note_last_changed">Last changed: %s</string>
 
     <!-- CONTENT DESCRIPTIONS -->
     <string name="content_description_add_note_fab">Button to open add new note screen.</string>

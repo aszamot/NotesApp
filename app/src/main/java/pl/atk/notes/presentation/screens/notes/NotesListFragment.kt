@@ -11,23 +11,20 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.search.SearchView.TransitionState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import pl.atk.notes.R
 import pl.atk.notes.databinding.FragmentNotesListBinding
-import pl.atk.notes.domain.exceptions.NoteIsInTrashException
 import pl.atk.notes.domain.exceptions.NoteNotFoundException
 import pl.atk.notes.presentation.model.NoteItemUi
 import pl.atk.notes.presentation.screens.base.BaseFragment
-import pl.atk.notes.presentation.screens.menu.CurrentMenuItem
 import pl.atk.notes.presentation.utils.adapters.NotesAdapter
 import pl.atk.notes.utils.extensions.empty
 import pl.atk.notes.utils.extensions.setupToolbarOffset
+import java.util.UUID
 
 @AndroidEntryPoint
 class NotesListFragment : BaseFragment<FragmentNotesListBinding>() {
@@ -39,27 +36,6 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>() {
 
     private var notesAdapter: NotesAdapter? = null
     private var searchNotesAdapter: NotesAdapter? = null
-
-    private val archiveSwipeHelper = ItemTouchHelper(object :
-        ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
-        override fun onMove(
-            recyclerView: RecyclerView,
-            viewHolder: RecyclerView.ViewHolder,
-            target: RecyclerView.ViewHolder
-        ): Boolean {
-            return false
-        }
-
-        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            val adapterPosition = viewHolder.adapterPosition
-            val note = notesAdapter?.currentList?.get(adapterPosition)
-            note?.let { viewModel.archiveNote(note) }
-        }
-
-        override fun isItemViewSwipeEnabled(): Boolean {
-            return !viewModel.isInNoteSelectedMode()
-        }
-    })
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -75,7 +51,6 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>() {
 
     private fun setupViews() {
         setupFabAddNote()
-        setupSearchBar()
         setupSearchView()
         setupToolbar()
         setupSwipeRefreshLayout()
@@ -85,19 +60,13 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>() {
 
     private fun setupFabAddNote() {
         binding.fabAddNote.setOnClickListener {
-            showSnackbar("GO TO ADD NOTE")
+            goToNotesDetailsFragment(null)
         }
     }
 
-    private fun setupSearchBar() {
-        binding.searchBar.setNavigationOnClickListener {
-            showMenuDialog()
-        }
-    }
-
-    private fun showMenuDialog() {
-        val action = NotesListFragmentDirections.actionNotesListFragmentToMenuDialog(
-            currentMenuItem = CurrentMenuItem.NOTES
+    private fun goToNotesDetailsFragment(noteId: UUID?) {
+        val action = NotesListFragmentDirections.actionNotesListFragmentToNoteDetailsFragment(
+            noteId = noteId
         )
         findNavController().navigate(action)
     }
@@ -116,11 +85,10 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>() {
     private fun setupToolbar() {
         with(binding) {
             chooseToolbar.setNavigationOnClickListener { viewModel.removeAllSelectedNote() }
-            chooseToolbar.inflateMenu(R.menu.menu_notes_list_selected_options)
+            chooseToolbar.inflateMenu(R.menu.menu_delete)
             chooseToolbar.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
-                    R.id.menu_archive -> viewModel.archiveSelectedNotes()
-                    R.id.menu_trash -> viewModel.trashSelectedNotes()
+                    R.id.menu_delete -> viewModel.deleteSelectedNotes()
                 }
                 false
             }
@@ -141,7 +109,6 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>() {
                 onNoteClickListener = ::onNoteClick,
                 onNoteLongClickListener = ::onNoteLongClick
             )
-            archiveSwipeHelper.attachToRecyclerView(this)
             adapter = notesAdapter
         }
     }
@@ -150,7 +117,7 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>() {
         if (viewModel.isInNoteSelectedMode()) {
             viewModel.selectNoteToggle(note)
         } else {
-            showSnackbar("GO TO EDIT NOTE")
+            goToNotesDetailsFragment(note.id)
         }
     }
 
@@ -161,7 +128,9 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>() {
     private fun setupSearchNotesRecyclerView() {
         binding.recyclerSearchNotes.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            searchNotesAdapter = NotesAdapter()
+            searchNotesAdapter = NotesAdapter(
+                onNoteClickListener = ::onNoteClick
+            )
             adapter = searchNotesAdapter
         }
     }
@@ -197,7 +166,6 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>() {
 
             if (uiState.error != null) {
                 when (uiState.error) {
-                    is NoteIsInTrashException -> showSnackbar(R.string.error_archive_note_in_trash)
                     is NoteNotFoundException -> showSnackbar(R.string.error_note_not_found)
                     else -> showSnackbar(R.string.error)
                 }

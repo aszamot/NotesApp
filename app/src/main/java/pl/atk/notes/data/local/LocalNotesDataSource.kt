@@ -6,15 +6,12 @@ import java.util.UUID
 
 interface LocalNotesDataSource {
     suspend fun addNote(note: Note)
-    suspend fun archiveNote(noteId: UUID)
-    suspend fun unArchiveNote(noteId: UUID)
-    suspend fun trashNote(noteId: UUID)
-    suspend fun unTrashNote(noteId: UUID)
+    suspend fun updateNote(note: Note)
+    suspend fun updateNoteTitle(noteId: UUID, title: String?)
+    suspend fun updateNoteContent(noteId: UUID, content: String?)
     suspend fun deleteNote(noteId: UUID)
-    suspend fun deleteAllNotesInTrash()
+    suspend fun deleteAllNotes()
+    fun getNoteFlow(noteId: UUID?): Flow<Note?>
     fun getNotesFlow(): Flow<List<Note>>
     fun searchNotesFlow(query: String?): Flow<List<Note>>
-    fun getArchivedNotesFlow(): Flow<List<Note>>
-    fun searchArchivedNotesFlow(query: String?): Flow<List<Note>>
-    fun getInTrashNotesFlow(): Flow<List<Note>>
 }

@@ -10,25 +10,26 @@ import pl.atk.notes.TestData
 import pl.atk.notes.TestDispatcherRule
 import pl.atk.notes.domain.repository.NotesRepository
 
-class AddNoteUseCaseTest {
+//todo
+class AddEmptyNoteUseCaseTest {
 
     @get: Rule
     val dispatcherRule = TestDispatcherRule()
 
-    private lateinit var useCase: AddNoteUseCase
+    private lateinit var useCase: AddEmptyNoteUseCase
     private lateinit var notesRepository: NotesRepository
 
     @Before
     fun setUp() {
         notesRepository = mock()
-        useCase = AddNoteUseCase(notesRepository, dispatcherRule.testDispatcher)
+        useCase = AddEmptyNoteUseCase(notesRepository, dispatcherRule.testDispatcher)
     }
 
     @Test
     fun invoke_shouldCallNotesRepositoryAddNote() = runTest {
         val note = TestData.TEST_NOTE_1
 
-        useCase.invoke(note)
+        useCase.invoke()
 
         verify(notesRepository).addNote(note)
     }

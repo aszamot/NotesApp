@@ -35,7 +35,6 @@
 
         </FrameLayout>
 
-
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -54,9 +53,7 @@
             android:id="@+id/search_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/search_notes"
-            app:navigationIcon="@drawable/ic_menu"
-            app:tintNavigationIcon="?colorOnSurface" />
+            android:hint="@string/search_notes" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
