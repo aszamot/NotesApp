@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_notesListFragment_to_noteDetailsFragment"
             app:destination="@id/noteDetailsFragment" />
+        <action
+            android:id="@+id/action_notesListFragment_to_aboutAppFragment"
+            app:destination="@id/aboutAppFragment" />
     </fragment>
     <fragment
         android:id="@+id/noteDetailsFragment"
@@ -24,4 +27,9 @@
             app:argType="java.util.UUID"
             app:nullable="true" />
     </fragment>
+    <fragment
+        android:id="@+id/aboutAppFragment"
+        android:name="pl.atk.notes.presentation.screens.about.AboutAppFragment"
+        android:label="AboutAppFragment"
+        tools:layout="@layout/fragment_about_app" />
 </navigation>

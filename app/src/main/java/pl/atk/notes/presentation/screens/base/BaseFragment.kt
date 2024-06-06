@@ -1,5 +1,7 @@
 package pl.atk.notes.presentation.screens.base
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +10,8 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
+import pl.atk.notes.R
+
 
 abstract class BaseFragment<VB : ViewBinding> : Fragment() {
 
@@ -39,4 +43,12 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
         Snackbar.make(binding.root, msg, Snackbar.LENGTH_SHORT).show()
     }
 
+    protected fun openLink(link: String) {
+        try {
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+            startActivity(browserIntent)
+        } catch (e: Exception) {
+            showSnackbar(R.string.error_cannot_open_link)
+        }
+    }
 }

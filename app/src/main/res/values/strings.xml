@@ -23,10 +23,36 @@
     <string name="note_content">Content</string>
     <string name="note_last_changed">Last changed: %s</string>
 
+    <!-- ABOUT APP -->
+    <string name="about_app_title">About app</string>
+    <string name="about_app_version">App version</string>
+    <string name="about_app_description">This note-taking application was created as a demonstration of implementing clean architecture within the Android ecosystem. Below are the main technologies and design patterns used in the application. Application works only in offline mode. It doesn\'t connect to any server.</string>
+    <string name="about_app_technologies_and_architecture">Technologies and Architecture</string>
+    <string name="about_app_clean_architecture"><![CDATA[<b>Clean Architecture</b>: The structure of the application is based on the principles of clean architecture, which ensures a clear separation of responsibilities between the presentation, domain, and data layers. This structure facilitates testing, development, and maintenance of the code.]]></string>
+    <string name="about_app_room"><![CDATA[<b>Room</b>: The Room library is used to manage the local SQLite database. Room offers strong typing and safe execution of SQL queries, accelerating development and improving application stability.]]></string>
+    <string name="about_app_jetpack"><![CDATA[<b>Android Jetpack</b>: The application utilizes components from Android Jetpack, such as:]]></string>
+    <string name="about_app_view_model"><![CDATA[<b>ViewModel</b>: Manages UI-related data and lifecycle.]]></string>
+    <string name="about_app_navigation"><![CDATA[<b>Navigation</b>: Handles navigation and transitions between screens.]]></string>
+    <string name="about_app_coroutines_and_flow"><![CDATA[<b>Kotlin Coroutines and Flow</b>: Using Kotlin Coroutines and Flow for handling asynchronous operations and data streams. Flow allows emitting streams of data that are easy to observe and manipulate.]]></string>
+    <string name="about_app_mvvm"><![CDATA[<b>MVVM (Model-View-ViewModel)</b>: The MVVM architectural pattern is applied to separate business logic from the presentation layer. ViewModel holds the logic and data, while the View is responsible for their presentation.]]></string>
+    <string name="about_app_hilt"><![CDATA[<b>Hilt</b>: Hilt is used for dependency injection in the application. It simplifies the process of providing dependencies to classes, reducing boilerplate code and making the codebase more maintainable.]]></string>
+    <string name="about_app_testing">Testing the Application</string>
+    <string name="about_app_testing_description">Testing is an integral part of the development process for this application. We use the following testing libraries to ensure code quality and reliability:</string>
+    <string name="about_app_junit"><![CDATA[<b>JUnit</b>: The basic library for writing unit tests in Java and Kotlin.]]></string>
+    <string name="about_app_mockito"><![CDATA[<b>Mockito-Kotlin</b>: A library for creating mocks and stubs in Kotlin, facilitating the testing of dependencies and interactions between components.]]></string>
+    <string name="about_app_androidx_test"><![CDATA[<b>AndroidX Test Libraries</b>]]></string>
+    <string name="about_app_kotlinx_test"><![CDATA[<b>Kotlinx Coroutines Test</b>: Tools for testing code based on Kotlin Coroutines, including testing asynchronous functions.]]></string>
+    <string name="about_app_turbine"><![CDATA[<b>Turbine</b>: A library for testing Flow streams, allowing easy assertions on emitted values in streams.]]></string>
+    <string name="about_app_repo">The source code of the application is available in a public repository on GitHub</string>
+    <string name="about_app_repo_link">https://github.com/aszamot/NotesApp</string>
+
     <!-- CONTENT DESCRIPTIONS -->
     <string name="content_description_add_note_fab">Button to open add new note screen.</string>
+    <string name="content_description_logo">Logo.</string>
+    <string name="content_description_github_logo">Github logo.</string>
 
     <!-- ERRORS -->
     <string name="error">Error</string>
     <string name="error_note_not_found">Note not found.</string>
+    <string name="error_cannot_open_link">Error opening link.</string>
 </resources>

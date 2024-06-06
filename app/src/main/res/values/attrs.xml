@@ -9,4 +9,8 @@
         <attr name="icon" />
     </declare-styleable>
 
+    <declare-styleable name="BulletTextView">
+        <attr name="text" />
+    </declare-styleable>
+
 </resources>

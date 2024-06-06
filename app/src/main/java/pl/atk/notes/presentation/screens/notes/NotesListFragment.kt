@@ -52,6 +52,7 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>() {
 
     private fun setupViews() {
         setupFabAddNote()
+        setupSearchBar()
         setupSearchView()
         setupToolbar()
         setupSwipeRefreshLayout()
@@ -69,6 +70,17 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>() {
         val action = NotesListFragmentDirections.actionNotesListFragmentToNoteDetailsFragment(
             noteId = noteId
         )
+        findNavController().navigate(action)
+    }
+
+    private fun setupSearchBar() {
+        binding.searchBar.setNavigationOnClickListener {
+            goToAboutAppFragment()
+        }
+    }
+
+    private fun goToAboutAppFragment() {
+        val action = NotesListFragmentDirections.actionNotesListFragmentToAboutAppFragment()
         findNavController().navigate(action)
     }
 
