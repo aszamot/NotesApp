@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import pl.atk.notes.R
 import pl.atk.notes.domain.usecases.AddEmptyNoteUseCase
 import pl.atk.notes.domain.usecases.GetNoteUseCase
 import pl.atk.notes.domain.usecases.delete.DeleteNoteUseCase
