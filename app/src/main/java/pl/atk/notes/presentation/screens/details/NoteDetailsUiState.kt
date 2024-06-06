@@ -7,6 +7,5 @@ data class NoteDetailsUiState(
     val noteContent: String? = null,
     val lastChangedDate: Date? = null,
     val error: Throwable? = null,
-    val message: Int? = null,
     val navigateBack: Boolean = false
 )

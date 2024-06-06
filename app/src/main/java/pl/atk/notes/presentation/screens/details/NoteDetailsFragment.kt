@@ -106,11 +106,6 @@ class NoteDetailsFragment : BaseFragment<FragmentNoteDetailsBinding>() {
                 toolbar.title = getString(R.string.note_last_changed, it.toReadableString())
             }
 
-            if (uiState.message != null) {
-                showSnackbar(uiState.message)
-                viewModel.consumeMessage()
-            }
-
             if (uiState.error != null) {
                 when (uiState.error) {
                     is NoteNotFoundException -> showSnackbar(R.string.error_note_not_found)

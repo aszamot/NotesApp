@@ -131,7 +131,7 @@ class NoteDetailsViewModel @Inject constructor(
                 noteId?.let {
                     deleteNoteUseCase.invoke(it)
                     _uiState.value =
-                        _uiState.value.copy(message = R.string.note_deleted, navigateBack = true)
+                        _uiState.value.copy(navigateBack = true)
                 }
             } catch (e: Exception) {
                 setError(e)
@@ -142,10 +142,6 @@ class NoteDetailsViewModel @Inject constructor(
     fun consumeNavigateBack() {
         _uiState.value =
             _uiState.value.copy(navigateBack = false)
-    }
-
-    fun consumeMessage() {
-        _uiState.value = _uiState.value.copy(message = null)
     }
 
     private fun setError(e: Throwable?) {
