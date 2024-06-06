@@ -29,7 +29,7 @@ class GetAllNotesUseCaseTest {
     }
 
     @Test
-    fun invoke_shouldUseRepositoryGetAllNotesFlowWithNullFilter() = runTest {
+    fun invoke_shouldUseRepositoryGetAllNotesFlow() = runTest {
         useCase.invoke()
 
         verify(notesRepository).getAllNotesFlow()

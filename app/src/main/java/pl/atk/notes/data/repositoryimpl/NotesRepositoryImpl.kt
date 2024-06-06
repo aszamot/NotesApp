@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import pl.atk.notes.data.local.LocalNotesDataSource
 import pl.atk.notes.di.IoDispatcher
+import pl.atk.notes.domain.exceptions.NoteNotFoundException
 import pl.atk.notes.domain.models.Note
 import pl.atk.notes.domain.repository.NotesRepository
 import pl.atk.notes.domain.utils.SearchNotesQuery
@@ -38,24 +39,19 @@ class NotesRepositoryImpl @Inject constructor(
         localNotesDataSource.addNote(note)
     }
 
-    override suspend fun updateNote(note: Note) = withContext(ioDispatcher) {
-        localNotesDataSource.updateNote(note)
-    }
-
+    @Throws(NoteNotFoundException::class)
     override suspend fun updateNoteTitle(noteId: UUID, title: String?) = withContext(ioDispatcher) {
         localNotesDataSource.updateNoteTitle(noteId, title)
     }
 
+    @Throws(NoteNotFoundException::class)
     override suspend fun updateNoteContent(noteId: UUID, content: String?) =
         withContext(ioDispatcher) {
             localNotesDataSource.updateNoteContent(noteId, content)
         }
 
+    @Throws(NoteNotFoundException::class)
     override suspend fun deleteNote(noteId: UUID) = withContext(ioDispatcher) {
         localNotesDataSource.deleteNote(noteId)
-    }
-
-    override suspend fun deleteAllNotes() = withContext(ioDispatcher) {
-        localNotesDataSource.deleteAllNotes()
     }
 }

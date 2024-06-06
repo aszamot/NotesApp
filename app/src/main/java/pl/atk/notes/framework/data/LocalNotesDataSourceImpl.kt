@@ -8,8 +8,10 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import pl.atk.notes.data.local.LocalNotesDataSource
 import pl.atk.notes.di.IoDispatcher
+import pl.atk.notes.domain.exceptions.NoteNotFoundException
 import pl.atk.notes.domain.models.Note
 import pl.atk.notes.framework.db.daos.NotesDao
+import pl.atk.notes.framework.db.models.NoteEntity
 import pl.atk.notes.utils.extensions.empty
 import pl.atk.notes.utils.extensions.toNote
 import pl.atk.notes.utils.extensions.toNoteEntity
@@ -25,38 +27,30 @@ class LocalNotesDataSourceImpl @Inject constructor(
         notesDao.addNote(note.toNoteEntity())
     }
 
-    override suspend fun updateNote(note: Note) = withContext(ioDispatcher) {
-        notesDao.update(note.toNoteEntity())
-    }
-
+    @Throws(NoteNotFoundException::class)
     override suspend fun updateNoteTitle(noteId: UUID, title: String?): Unit =
         withContext(ioDispatcher) {
-            notesDao.getNote(noteId)?.let { note ->
-                val newNote = note.copy(
-                    title = title,
-                    timestamp = System.currentTimeMillis()
-                )
-                notesDao.update(newNote)
-            }
+            val note = tryToGetNote(noteId)
+            val newNote = note.copy(
+                title = title,
+                timestamp = System.currentTimeMillis()
+            )
+            notesDao.update(newNote)
         }
 
+    @Throws(NoteNotFoundException::class)
     override suspend fun updateNoteContent(noteId: UUID, content: String?): Unit =
         withContext(ioDispatcher) {
-            notesDao.getNote(noteId)?.let { note ->
-                val newNote = note.copy(
-                    content = content,
-                    timestamp = System.currentTimeMillis()
-                )
-                notesDao.update(newNote)
-            }
+            val note = tryToGetNote(noteId)
+            val newNote = note.copy(
+                content = content,
+                timestamp = System.currentTimeMillis()
+            )
+            notesDao.update(newNote)
         }
 
     override suspend fun deleteNote(noteId: UUID) = withContext(ioDispatcher) {
         notesDao.delete(noteId)
-    }
-
-    override suspend fun deleteAllNotes() = withContext(ioDispatcher) {
-        notesDao.deleteAllNotes()
     }
 
     override fun getNoteFlow(noteId: UUID?): Flow<Note?> {
@@ -83,5 +77,14 @@ class LocalNotesDataSourceImpl @Inject constructor(
             .map { notes ->
                 notes.map { it.toNote() }
             }
+    }
+
+    @Throws(NoteNotFoundException::class)
+    private suspend fun tryToGetNote(noteId: UUID): NoteEntity {
+        val note = notesDao.getNote(noteId)
+        if (note == null) {
+            throw NoteNotFoundException()
+        } else
+            return note
     }
 }

@@ -4,7 +4,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import pl.atk.notes.TestData
 
-class NotesExtensionsKtTest {
+class NotesExtensionsTest {
 
     @Test
     fun note_toNoteEntity_success() {

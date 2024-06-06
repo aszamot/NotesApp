@@ -3,7 +3,7 @@ package pl.atk.notes.utils.extensions
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class StringExtensionsKtTest {
+class StringExtensionsTest {
 
     @Test
     fun stringEmptyExtension_shouldReturnEmptyString() {

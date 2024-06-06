@@ -1,16 +1,17 @@
 package pl.atk.notes.domain.usecases
 
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
-import pl.atk.notes.TestData
 import pl.atk.notes.TestDispatcherRule
+import pl.atk.notes.domain.models.Note
 import pl.atk.notes.domain.repository.NotesRepository
 
-//todo
 class AddEmptyNoteUseCaseTest {
 
     @get: Rule
@@ -26,11 +27,22 @@ class AddEmptyNoteUseCaseTest {
     }
 
     @Test
-    fun invoke_shouldCallNotesRepositoryAddNote() = runTest {
-        val note = TestData.TEST_NOTE_1
+    fun invoke_shouldCallNotesRepositoryAddNoteWithEmptyNote() = runTest {
+        val noteCaptor = argumentCaptor<Note>()
 
-        useCase.invoke()
+        val noteId = useCase.invoke()
 
-        verify(notesRepository).addNote(note)
+        verify(notesRepository).addNote(noteCaptor.capture())
+
+        val capturedNote = noteCaptor.firstValue
+
+        assertEquals(noteId, capturedNote.id)
+        assertEquals("", capturedNote.title)
+        assertEquals("", capturedNote.content)
+        assertEquals(
+            System.currentTimeMillis().toDouble(),
+            capturedNote.timestamp.toDouble(),
+            1000.0
+        )
     }
 }

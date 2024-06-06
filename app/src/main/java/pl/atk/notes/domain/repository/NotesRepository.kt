@@ -13,9 +13,7 @@ interface NotesRepository {
 
     fun getNoteFlow(noteId: UUID?): Flow<Note?>
     suspend fun addNote(note: Note)
-    suspend fun updateNote(note: Note)
     suspend fun updateNoteTitle(noteId: UUID, title: String?)
     suspend fun updateNoteContent(noteId: UUID, content: String?)
     suspend fun deleteNote(noteId: UUID)
-    suspend fun deleteAllNotes()
 }

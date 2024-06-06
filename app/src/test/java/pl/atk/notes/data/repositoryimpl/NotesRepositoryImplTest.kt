@@ -7,12 +7,14 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import pl.atk.notes.TestData
 import pl.atk.notes.TestDispatcherRule
 import pl.atk.notes.data.local.LocalNotesDataSource
+import pl.atk.notes.domain.exceptions.NoteNotFoundException
 import pl.atk.notes.domain.utils.SearchNotesQuery
 import java.util.UUID
 
@@ -79,18 +81,53 @@ class NotesRepositoryImplTest {
     }
 
     @Test
+    fun updateNoteTitle_shouldCallLocalDataSourceUpdateNoteTitle() = runTest {
+        val noteId = UUID.randomUUID()
+        val newTitle = "newTitle"
+
+        repository.updateNoteTitle(noteId, newTitle)
+
+        verify(localNotesDataSource).updateNoteTitle(noteId, newTitle)
+    }
+
+    @Test(expected = NoteNotFoundException::class)
+    fun updateNoteTitle_noteNotFound_shouldThrowNoteNotFoundException() = runTest {
+        val noteId = UUID.randomUUID()
+        val newTitle = "newTitle"
+
+        doAnswer { throw NoteNotFoundException() }.whenever(localNotesDataSource)
+            .updateNoteTitle(noteId, newTitle)
+
+        repository.updateNoteTitle(noteId, newTitle)
+    }
+
+    @Test
+    fun updateNoteContent_shouldCallLocalDataSourceUpdateNoteContent() = runTest {
+        val noteId = UUID.randomUUID()
+        val newContent = "New content"
+
+        repository.updateNoteContent(noteId, newContent)
+
+        verify(localNotesDataSource).updateNoteContent(noteId, newContent)
+    }
+
+    @Test(expected = NoteNotFoundException::class)
+    fun updateNoteContent_noteNotFound_shouldThrowNoteNotFoundException() = runTest {
+        val noteId = UUID.randomUUID()
+        val newContent = "New content"
+
+        doAnswer { throw NoteNotFoundException() }.whenever(localNotesDataSource)
+            .updateNoteContent(noteId, newContent)
+
+        repository.updateNoteContent(noteId, newContent)
+    }
+
+    @Test
     fun deleteNote_shouldCallLocalDataSourceDeleteNote() = runTest {
         val noteId = UUID.randomUUID()
 
         repository.deleteNote(noteId)
 
         verify(localNotesDataSource).deleteNote(noteId)
-    }
-
-    @Test
-    fun deleteAllNotesInTrash_shouldCallLocalDataSourceDeleteAllNotesInTrash() = runTest {
-        repository.deleteAllNotes()
-
-        verify(localNotesDataSource).deleteAllNotes()
     }
 }
