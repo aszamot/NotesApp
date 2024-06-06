@@ -21,6 +21,7 @@ import pl.atk.notes.databinding.FragmentNotesListBinding
 import pl.atk.notes.domain.exceptions.NoteNotFoundException
 import pl.atk.notes.presentation.model.NoteItemUi
 import pl.atk.notes.presentation.screens.base.BaseFragment
+import pl.atk.notes.presentation.screens.confirmation.ConfirmationDialog
 import pl.atk.notes.presentation.utils.adapters.NotesAdapter
 import pl.atk.notes.utils.extensions.empty
 import pl.atk.notes.utils.extensions.setupToolbarOffset
@@ -88,11 +89,21 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>() {
             chooseToolbar.inflateMenu(R.menu.menu_delete)
             chooseToolbar.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
-                    R.id.menu_delete -> viewModel.deleteSelectedNotes()
+                    R.id.menu_delete -> showDeleteConfirmationDialog()
                 }
                 false
             }
         }
+    }
+
+    private fun showDeleteConfirmationDialog() {
+        val dialog =
+            ConfirmationDialog(
+                confirmationQuestionId = R.string.notes_delete_confirmation_question,
+                onConfirm = {
+                    viewModel.deleteSelectedNotes()
+                })
+        dialog.show(childFragmentManager, ConfirmationDialog.TAG)
     }
 
     private fun setupSwipeRefreshLayout() {

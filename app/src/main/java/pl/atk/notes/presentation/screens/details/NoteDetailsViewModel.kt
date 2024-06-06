@@ -151,4 +151,8 @@ class NoteDetailsViewModel @Inject constructor(
     private fun setError(e: Throwable?) {
         _uiState.value = _uiState.value.copy(error = e)
     }
+
+    fun consumeError() {
+        _uiState.value = _uiState.value.copy(error = null)
+    }
 }

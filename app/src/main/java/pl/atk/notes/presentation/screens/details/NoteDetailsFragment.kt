@@ -15,7 +15,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import pl.atk.notes.R
 import pl.atk.notes.databinding.FragmentNoteDetailsBinding
+import pl.atk.notes.domain.exceptions.NoteNotFoundException
 import pl.atk.notes.presentation.screens.base.BaseFragment
+import pl.atk.notes.presentation.screens.confirmation.ConfirmationDialog
 import pl.atk.notes.utils.extensions.toReadableString
 
 @AndroidEntryPoint
@@ -46,11 +48,21 @@ class NoteDetailsFragment : BaseFragment<FragmentNoteDetailsBinding>() {
             toolbar.inflateMenu(R.menu.menu_delete)
             toolbar.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
-                    R.id.menu_delete -> viewModel.deleteNote()
+                    R.id.menu_delete -> showDeleteConfirmationDialog()
                 }
                 false
             }
         }
+    }
+
+    private fun showDeleteConfirmationDialog() {
+        val dialog =
+            ConfirmationDialog(
+                confirmationQuestionId = R.string.note_delete_confirmation_question,
+                onConfirm = {
+                    viewModel.deleteNote()
+                })
+        dialog.show(childFragmentManager, ConfirmationDialog.TAG)
     }
 
     private fun setupEditTexts() {
@@ -97,6 +109,14 @@ class NoteDetailsFragment : BaseFragment<FragmentNoteDetailsBinding>() {
             if (uiState.message != null) {
                 showSnackbar(uiState.message)
                 viewModel.consumeMessage()
+            }
+
+            if (uiState.error != null) {
+                when (uiState.error) {
+                    is NoteNotFoundException -> showSnackbar(R.string.error_note_not_found)
+                    else -> showSnackbar(R.string.error)
+                }
+                viewModel.consumeError()
             }
 
             if (uiState.navigateBack) {
